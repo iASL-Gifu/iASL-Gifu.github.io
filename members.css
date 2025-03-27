@@ -1,0 +1,209 @@
+:root {
+    --nav-bg: #2b3033;
+}
+
+body {
+    background-color: #5fc7ea;
+}
+
+.carousel {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.carousel-item {
+    position: absolute;
+    z-index: var(--zIndex);
+    width: clamp(240px, 36vw, 300px);
+    height: clamp(320px, 48vw, 400px);
+    margin: calc(clamp(200px, 40vw, 400px) * -0.5) 0 0 calc(clamp(150px, 30vw, 300px) * -0.5);
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    user-select: none;
+    transform-origin: 0% 100%;
+    box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.5);
+    background: black;
+    pointer-events: all;
+    transform: translate(calc(var(--active) * 990%), calc(var(--active) * 10%)) rotate(calc(var(--active) * 160deg));
+    transition: transform 0.5s cubic-bezier(0, 0.02, 0, 1);
+}
+
+@media (max-width: 640px) {
+    .carousel-item {
+        transform: translate(calc(var(--active) * 400%), calc(var(--active) * 600%)) rotate(calc(var(--active) * 160deg));
+        margin: calc(clamp(320px, 48vw, 400px) * -0.5) 0 0 calc(clamp(240px, 36vw, 300px) * -0.5);
+    }
+}
+
+/* .carousel-item 内部 */
+.carousel-item .carousel-box {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
+    opacity: calc(var(--zIndex) / 10 * 3 - 2);
+    font-family: 'Orelo-sw-db', serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.carousel-item .carousel-box:before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5));
+}
+
+.carousel-item .title {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    bottom: 20%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
+    font-size: clamp(17px, 3vw, 30px);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-item .num {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    top: 10px;
+    left: 20px;
+    transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
+    font-size: clamp(15px, 3vw, 30px);
+}
+
+.carousel-item .comment {
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    bottom: 5%;
+    left: 10px;
+    margin-right: 10px;
+    transition: opacity 0.8s cubic-bezier(0, 0.02, 0, 1);
+    font-size: clamp(13px, 1.5vw, 18px);
+}
+
+@media (max-width: 500px) {
+    .carousel-item .title {
+        text-align: left;
+        bottom: 20%;
+        left: 10px;
+    }
+
+    .carousel-item .comment {
+        bottom: 5%;
+        font-size: clamp(14px, 1.5vw, 18px);
+    }
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+}
+
+.category {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    filter: brightness(0.7);
+}
+
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto 5%;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    bottom: 20%;
+    left: 0;
+    margin: auto;
+}
+
+.profile img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius:50%;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+@media (max-width: 800px) {
+    .profile img {
+        width: 195px;
+        height: 195px;
+    }
+}
+
+@media (max-width: 640px) {
+    .profile img {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+.controller {
+    position: absolute;
+    margin: auto;
+    bottom: 10%;
+    width: 100%;
+    text-align: center;
+}
+
+.controller button {
+    margin: 0 100px;
+    padding: 10px;
+    color: white;
+    font-size: 50px;
+    border: 0;
+    background: none;
+}
+
+@media (max-width: 640px) {
+    .controller {
+        display: none;
+    }
+}
+
+.logo {
+    position: fixed;
+    bottom: 3vh;
+    left: 3vw;
+    z-index: 2;
+}
+
+.logo i {
+    font-size: 7vh;
+    color: var(--nav-bg);
+}
+
+@media (max-width: 640px) {
+    .logo i {
+        font-size: 5vh;
+    }
+}
+
+.logo img:hover {
+    transform: rotate(360deg) scale(1.1);
+}

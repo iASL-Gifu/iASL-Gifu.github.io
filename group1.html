@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自動運転 | iASL</title>
+    <link rel="icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="burger">
+            <div class="burger__patty"></div>
+        </div>
+        
+        <ul class="nav__list">
+            <li class="nav__item">
+            <a href="#1" class="nav__link c-yellow"><i class="fa fa-wifi"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#2" class="nav__link c-blue"><i class="fa fa-earth-asia"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#3" class="nav__link c-yellow"><i class="fa fa-brain"></i></a>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="panel b-white" id="0">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <div class="image_container">
+                    <div class="image_in_text">
+                        <h1><i class="fa fa-car-on"></i><br class="sp_br"><span>&nbsp;</span>自動運転</h1>
+                    </div>
+                </div>
+            </div>
+            <svg class="arrows">
+                <path class="a1" d="M0 0 L30 32 L60 0"></path>
+                <path class="a2" d="M0 20 L30 52 L60 20"></path>
+                <path class="a3" d="M0 40 L30 72 L60 40"></path>
+            </svg>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="1">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-wifi"></i>&nbsp;<br class="sp_br">センシング</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <img src="img/research/sensing.png">
+                    </div>
+                    <div class="panel__content__right">
+                        <p>"先進ぐ"なセンシング領域でちょっとした研究をしてみますね。</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-blue" id="2">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-earth-asia"></i>&nbsp;<br class="sp_br">環境・シミュレータ</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p>環境対策のため省エネ運転を心がけます。</p>
+                    </div>
+                    <div class="panel__content__right">
+                        <img src="img/research/environment.png">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="3">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-brain"></i>&nbsp;<br class="sp_br">自動運転AI</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <img src="img/research/ai.png">
+                    </div>
+                    <div class="panel__content__right">
+                        <p>どの信号を右折すればいいか、ChatGPTに聞くことによって最適な経路で運転します。もうおかしなナビに騙されません。</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
+    <a href="#0" class="tire"><div class="scroll_indicator"></div></a>
+    <div id="popup">
+        <span id="popup-close">✖</span>
+        <img id="popup-image" src="">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

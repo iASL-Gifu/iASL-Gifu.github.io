@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iASL - アレックス研究室</title>
+    <link rel="icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="burger">
+            <div class="burger__patty"></div>
+        </div>
+        
+        <ul class="nav__list">
+            <li class="nav__item">
+            <a href="#1" class="nav__link c-yellow"><i class="fa fa-newspaper"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#2" class="nav__link c-blue"><i class="fa fa-graduation-cap"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#3" class="nav__link c-yellow"><i class="fa fa-car"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#4" class="nav__link c-blue"><i class="fa fa-flask-vial"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#5" class="nav__link c-yellow"><i class="fa fa-map-location-dot"></i></a>
+            </li>
+        </ul>
+    </nav>
+    
+    <section class="panel b-white" id="0">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <div class="cover_logo">
+                    <img src="img/logo.png" alt="iASL">
+                    <p>Intelligent <br class="sp_br">Autonomous <br class="sp_br">Systems <br class="sp_br">Laboratory</p>
+                </div>
+            </div>
+            <svg class="arrows">
+                <path class="a1" d="M0 0 L30 32 L60 0"></path>
+                <path class="a2" d="M0 20 L30 52 L60 20"></path>
+                <path class="a3" d="M0 40 L30 72 L60 40"></path>
+            </svg>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="1">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-newspaper"></i>&nbsp;News</h1>
+                <div class="panel__block"></div>
+                <div id="news-container">読み込み中...</div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-blue" id="2">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-graduation-cap"></i>&nbsp;Message</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <img src="img/alex.png">
+                    </div>
+                    <div class="panel__content__right">
+                        <p>いらっしゃいませ。</p>
+                        <h2>Contact</h2>
+                        <p>[Mail] alex@gifu-u.ac.jp</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="3">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-car"></i>&nbsp;About</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p>2022年11月に始まった岐阜大学 工学部 電気電子・情報工学科(情報コース)アレックス研究室です。主に自動運転に関連する研究をしています。</p>
+                        <p>Autoware Core/Universeによる自動運転走行が可能なプリウス・Pix Moving社 PixKit 3.0を用いて研究をしています。</p>
+                    </div>
+                    <div class="panel__content__right">
+                        <img src="img/about.png">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-blue" id="4">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-flask-vial"></i>&nbsp;Research</h1>
+                <div class="panel__block"></div>
+                <div class="groups">
+                    <div class="group1">
+                        <a href="group1.html"><img src="img/group1.png"></a>
+                    </div>
+                    <div class="group2">
+                        <a href="group2.html"><img src="img/group2.png"></a>
+                    </div>
+                    <div class="group3">
+                        <a href="group3.html"><img src="img/group3.png"></a>
+                    </div>
+                </div>
+                <a class="members" href="members.html">Members</a>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="5">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-map-location-dot"></i>&nbsp;Access</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p>〒501-1193 岐阜市柳戸1-1</p>
+                        <p>岐阜大学 工学部 C棟 7階 C730</p>
+                    </div>
+                    <div class="panel__content__right">
+                        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5278.983107360637!2d136.734353089158!3d35.464818784851104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6003ac859a55f3ab%3A0xf89f8d58b5a1ab9e!2z5bKQ6Zic5aSn5a2m!5e0!3m2!1sja!2sjp!4v1740554392777!5m2!1sja!2sjp" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <a href="#0" class="tire" target="_blank"><div class="scroll_indicator"></div></a>
+    <div id="popup">
+        <span id="popup-close">✖</span>
+        <img id="popup-image" src="">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
