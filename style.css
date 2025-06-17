@@ -153,11 +153,16 @@ ul {
 }
 
 .panel {
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+
+.panel#0 {
+    min-height: 30vh;
+    max-height: 30vh;
 }
 
 .panel__wrapper {
@@ -671,6 +676,7 @@ a.btn-engine-start-in span {
     margin: 0;
     position: relative;
     overflow: hidden;
+    text-align: center;
 }
 
 @media (max-width: 640px) {
