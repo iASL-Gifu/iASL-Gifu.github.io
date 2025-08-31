@@ -1,3 +1,6 @@
+/* Google FontsからZen Maru Gothicを読み込み */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap');
+
 :root {
     --nav-bg: #2b3033;
     --white: #ffffff;
@@ -17,7 +20,8 @@
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    /* フォントをZen Maru Gothicに変更 */
+    font-family: 'Zen Maru Gothic', sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     margin: 0;
@@ -186,7 +190,7 @@ ul {
 
 #news-container {
     max-height: 500px;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 .panel__content table {
@@ -232,11 +236,17 @@ ul {
 .panel__content__left {
     width: 50%;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .panel__content__right {
     width: 50%;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .panel__content__left img, .panel__content__right p {
@@ -701,7 +711,6 @@ a.btn-engine-start-in span {
     color: #ffffff;
     background-color: var(--orange);
     border-radius: 8px;
-    font-family: "proxima-nova-soft", sans-serif;
     font-weight: 600;
     font-size: 25px;
     text-decoration: none;
