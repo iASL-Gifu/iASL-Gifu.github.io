@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Profile | iASL</title>
+    <link rel="icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="profile.css"> </head>
+<body>
+    <div class="profile-container">
+        <div id="profile-content">
+            <p>読み込み中...</p>
+        </div>
+    </div>
+
+    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        function goBackOrRedirect() {
+            // members_list.htmlから来た場合はそのページに戻る
+            if (document.referrer.includes('members_list.html')) {
+                window.history.back();
+            } else {
+                window.location.href = "members_list.html";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const memberId = params.get('member'); // URLから "?member=〇〇" を取得
+
+            if (memberId) {
+                const markdownFile = `./profiles/${memberId}.md`; // 読み込むMDファイルのパス
+                
+                fetch(markdownFile)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('プロフィールが見つかりません。');
+                        }
+                        return response.text();
+                    })
+                    .then(markdownText => {
+                        // MarkdownをHTMLに変換して表示
+                        document.getElementById('profile-content').innerHTML = marked.parse(markdownText);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('profile-content').innerHTML = `<p style="text-align: center;">${error.message}</p>`;
+                    });
+            } else {
+                 document.getElementById('profile-content').innerHTML = '<p style="text-align: center;">メンバーが指定されていません。</p>';
+            }
+        });
+    </script>
+</body>
+</html>
