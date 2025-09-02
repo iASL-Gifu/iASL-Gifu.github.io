@@ -7,7 +7,8 @@
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="profile.css"> </head>
+    <link rel="stylesheet" href="profile.css">
+</head>
 <body>
     <div class="profile-container">
         <div id="profile-content">
@@ -18,10 +19,11 @@
     <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <script>
+        // 【重要】スプレッドシートの公開URLをここに貼り付け
+        const SPREADSHEET_URL = 'members.csv';
+
         function goBackOrRedirect() {
-            // members_list.htmlから来た場合はそのページに戻る
             if (document.referrer.includes('members_list.html')) {
                 window.history.back();
             } else {
@@ -29,32 +31,67 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
-            const memberId = params.get('member'); // URLから "?member=〇〇" を取得
-
+            const memberId = params.get('id');
+            
             if (memberId) {
-                const markdownFile = `./profiles/${memberId}.md`; // 読み込むMDファイルのパス
-                
-                fetch(markdownFile)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('プロフィールが見つかりません。');
-                        }
-                        return response.text();
-                    })
-                    .then(markdownText => {
-                        // MarkdownをHTMLに変換して表示
-                        document.getElementById('profile-content').innerHTML = marked.parse(markdownText);
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('profile-content').innerHTML = `<p style="text-align: center;">${error.message}</p>`;
-                    });
+                try {
+                    // スプレッドシートから全メンバーの情報を取得
+                    const response = await fetch(SPREADSHEET_URL);
+                    if (!response.ok) throw new Error('名簿データの取得に失敗しました。');
+                    
+                    const csvText = await response.text();
+                    const members = parseCSV(csvText);
+                    
+                    // 該当するIDのメンバーを探す
+                    const targetMember = members.find(m => m.id === memberId);
+                    if (!targetMember) throw new Error('指定されたメンバーが見つかりません。');
+
+                    // スプレッドシートから取得したローカルパスを使ってMDファイルを取得
+                    const markdownPath = targetMember.mdPath;
+                    if (!markdownPath) throw new Error('プロフィールファイルのパスが指定されていません。');
+
+                    const mdResponse = await fetch(markdownPath);
+                    if (!mdResponse.ok) throw new Error('プロフィールファイルの読み込みに失敗しました。');
+
+                    const markdownText = await mdResponse.text();
+                    document.getElementById('profile-content').innerHTML = marked.parse(markdownText);
+
+                } catch (error) {
+                    handleError(error.message);
+                }
             } else {
-                 document.getElementById('profile-content').innerHTML = '<p style="text-align: center;">メンバーが指定されていません。</p>';
+                handleError('メンバーが指定されていません。');
             }
         });
+
+        function handleError(message) {
+            console.error('Error:', message);
+            document.getElementById('profile-content').innerHTML = `<p style="text-align: center;">${message}</p>`;
+        }
+
+        function parseCSV(text) {
+            // Windowsの改行コード(CRLF)とMac/Linuxの改行コード(LF)の両方に対応
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length === 0) return [];
+
+            const headers = lines[0].split(',').map(h => h.trim());
+            const members = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                // 空白行を無視する
+                if (lines[i].trim() === '') continue;
+
+                const values = lines[i].split(',').map(v => v.trim());
+                const member = {};
+                headers.forEach((header, index) => {
+                    member[header] = values[index];
+                });
+                members.push(member);
+            }
+            return members;
+        }
     </script>
 </body>
 </html>

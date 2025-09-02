@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>画像表示テスト</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        img {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #ccc;
+            margin: 10px;
+        }
+        .success { border-color: green; }
+        .fail { border-color: red; }
+    </style>
+</head>
+<body>
+
+    <h1>画像表示 検証ページ</h1>
+    <p>
+        このページをブラウザで直接開いて、画像がどのように表示されるか確認してください。<br>
+        緑色の枠線が付けば成功、赤色の枠線は失敗の可能性を示します。
+    </p>
+
+    <hr>
+
+    <h2>テスト1：Google DriveのURLを直接指定</h2>
+    <p>スプレッドシートに記述した `imageUrl` のURLを一つコピーして、下の `src` の中に貼り付けてください。</p>
+    
+    <img 
+        src="https://drive.google.com/uc?export=view&id=1Y6TWYFUxAvibOEPfiA78lZsVl2I2pLZI" 
+        alt="Google Drive Image"
+        class="fail"
+        onerror="this.style.borderColor='red';"
+        onload="this.style.borderColor='green';"
+    >
+
+    <hr>
+
+    <h2>テスト2：プロジェクト内の画像を相対パスで指定</h2>
+    <p>プロジェクト内の `img/profile/alex.png` を表示するテストです。</p>
+
+    <img 
+        src="img/profile/alex.png" 
+        alt="Local Project Image"
+        class="fail"
+        onerror="this.style.borderColor='red';"
+        onload="this.style.borderColor='green';"
+    >
+
+</body>
+</html>

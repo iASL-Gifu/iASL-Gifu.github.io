@@ -1,0 +1,18 @@
+id,name,grade,imageUrl,mdPath,githubUrl,xUrl
+alex,Alexander Carballo,Boss,img/profile/alex.png,profiles/alex.md,#,
+koki,Koki Amakawa,M2,img/profile/alex.png,profiles/alex.md,#,#
+toki,Hayato Tokida ,M2,,,#,
+tom,Tomoki Sawada,M2,,,#,
+tomoki,Tomoki Kuno,M2,,,#,
+yusuke,Yusuke Yamatomo,M2,,,#,
+arata,Arata Tanaka,M1,,,#,
+karin,Karin Taguchi,M1,,,#,
+hayato,Hayashi Hayato,M1,,,#,
+masako,Yoshimasa Hamada,M1,,,#,
+dai,Dai Hasegawa,B4,,,#,
+hideki,Hideki Sugihara,B4,,,#,
+kei,Keitaro Takakura,B4,,,#,
+mana,Mana Yamauchi,B4,,,#,
+saku,Syotaro Nakamura,B4,,,#,
+soma,Soma Ito,B4,,,#,
+hira,Hira Akash,D1,,profiles/alex.md,#,
