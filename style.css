@@ -851,3 +851,78 @@ a.btn-engine-start-in span {
 .system {
     font-size: 12vw;
 }
+/* 1. ポップアップの背景（オーバーレイ） */
+.popup-overlay {
+    display: none; /* 初期状態は非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+
+    /* Flexboxを使って、中のコンテンツを中央に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. 画像を囲むコンテンツエリア */
+.popup-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+/* 3. ポップアップで表示する画像 */
+#popup-image {
+    display: block; /* 画像下の余白を消す */
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+}
+
+/* 4. 閉じるボタン */
+.popup-close {
+    position: absolute;
+    top: -40px; /* 画像の上部に配置 */
+    right: 0;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.popup-close:hover {
+    transform: scale(1.2);
+}
+
+.news-attachment-link {
+    display: inline-flex; /* アイコンとテキストを中央揃えにするため */
+    align-items: center;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: gray;
+    background: rgba(255, 255, 255, 0.1); /* ガラス風の背景 */
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin-left: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px); /* 背景をぼかす */
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.news-attachment-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #5fc7ea;
+    transform: translateY(-2px); /* 少し浮き上がるエフェクト */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.news-attachment-link .fa-image {
+    margin-right: 8px;
+}
