@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Profile | iASL</title>
-    <link rel="icon" href="img/favicon.ico">
+    <link rel="icon" href="/img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/component/style/profile.css">
 </head>
 <body>
     <div class="profile-container">
@@ -21,13 +21,13 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // 【重要】スプレッドシートの公開URLをここに貼り付け
-        const SPREADSHEET_URL = 'members.csv';
+        const SPREADSHEET_URL = '/component/profiles/members.csv';
 
         function goBackOrRedirect() {
-            if (document.referrer.includes('members_list.html')) {
+            if (document.referrer.includes('/component/members_list.html')) {
                 window.history.back();
             } else {
-                window.location.href = "members_list.html";
+                window.location.href = "/component/members_list.html";
             }
         }
 

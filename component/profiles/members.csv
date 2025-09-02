@@ -1,6 +1,6 @@
 id,name,grade,imageUrl,mdPath,githubUrl,xUrl
-alex,Alexander Carballo,Boss,img/profile/alex.png,profiles/alex.md,#,
-koki,Koki Amakawa,M2,img/profile/alex.png,profiles/alex.md,#,#
+alex,Alexander Carballo,Boss,/img/profile/alex.png,profiles/alex.md,#,
+koki,Koki Amakawa,M2,/img/profile/alex.png,profiles/alex.md,#,#
 toki,Hayato Tokida ,M2,,,#,
 tom,Tomoki Sawada,M2,,,#,
 tomoki,Tomoki Kuno,M2,,,#,

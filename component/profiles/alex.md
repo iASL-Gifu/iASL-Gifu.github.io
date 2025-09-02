@@ -1,6 +1,6 @@
 # Alexander Carballo (アレックス)
 
-![アレックスの写真](img/profile/alex.png)
+![アレックスの写真](/img/profile/alex.png)
 
 ## 自己紹介
 みなさん、こんにちは。岐阜大学で准教授をしています、カルバヨ アレックサンダーです。

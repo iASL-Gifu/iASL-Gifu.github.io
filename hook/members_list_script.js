@@ -1,5 +1,5 @@
 // CSVファイルのパスを指定
-const MEMBER_DATA_URL = 'members.csv';
+const MEMBER_DATA_URL = '/component/profiles/members.csv';
 
 // 学年の表示順を定義
 const GRADE_ORDER = ['Boss', 'PD', 'D3', 'D2', 'D1', 'M2', 'M1', 'B4', 'B3'];
@@ -9,7 +9,7 @@ function goBackOrRedirect() {
     if (document.referrer) {
         window.history.back();
     } else {
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
     }
 }
 
@@ -78,8 +78,8 @@ function displayMembers(members) {
 }
 
 function createMemberCard(member) {
-    const githubIcon = member.githubUrl ? `<a href="${member.githubUrl}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="img/github.png" alt="GitHub" class="social-icon"></a>` : '';
-    const xIcon = member.xUrl ? `<a href="${member.xUrl}" target="_blank" rel="noopener noreferrer" title="X"><img src="img/x-logo.png" alt="X" class="social-icon"></a>` : '';
+    const githubIcon = member.githubUrl ? `<a href="${member.githubUrl}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="/img/github.png" alt="GitHub" class="social-icon"></a>` : '';
+    const xIcon = member.xUrl ? `<a href="${member.xUrl}" target="_blank" rel="noopener noreferrer" title="X"><img src="/img/x-logo.png" alt="X" class="social-icon"></a>` : '';
     return `
         <div class="member-card">
             <a href="profile.html?id=${member.id}" class="profile-link">
