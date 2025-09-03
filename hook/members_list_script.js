@@ -79,7 +79,12 @@ function displayMembers(members) {
 
 function createMemberCard(member) {
     const githubIcon = member.githubUrl ? `<a href="${member.githubUrl}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="/img/github.png" alt="GitHub" class="social-icon"></a>` : '';
-    const xIcon = member.xUrl ? `<a href="${member.xUrl}" target="_blank" rel="noopener noreferrer" title="X"><img src="/img/x-logo.png" alt="X" class="social-icon"></a>` : '';
+    const xIcon = member.snsUrl ? `<a href="${member.snsUrl}" target="_blank" rel="noopener noreferrer" title="SNS"><img src="${member.snsLogo}" alt="SNS" class="social-icon"></a>` : '';
+    
+    // キーワードをタグとして表示
+    const keywords = member.keywords 
+        ? member.keywords.split(' ').map(keyword => `<span class="keyword-tag">${keyword}</span>`).join('') 
+        : '';
     return `
         <div class="member-card">
             <a href="profile.html?id=${member.id}" class="profile-link">
@@ -89,6 +94,9 @@ function createMemberCard(member) {
                 <h3 class="member-name">
                     <a href="profile.html?id=${member.id}" class="profile-link">${member.name}</a>
                 </h3>
+                <div class="keywords-container">
+                    ${keywords}
+                </div>
                 <div class="social-icons">
                     ${githubIcon}
                     ${xIcon}

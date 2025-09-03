@@ -89,10 +89,14 @@ async function fetchNews() {
 
       let html = `<table>`;
       newsData.forEach(news => {
-          let contentHtml = (news.attachment)
-              ? `${news.content} <a href="${news.attachment}" class="news-attachment-link" onclick="showPopup(event, '${news.attachment}')"><i class="fa fa-image"></i> 添付画像を見る</a>`
-              : news.content;
-
+          let contentHtml = news.content;
+          if (news.attachment) {
+              if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
+                  contentHtml += ` <a href="${news.attachment}" class="news-attachment-link" onclick="showPopup(event, '${news.attachment}')"><i class="fa fa-image"></i>写真を見る</a>`;
+              } else if (news.attachment.endsWith('.md')) {
+                  contentHtml += ` <a href="${news.attachment}" class="news-attachment-link" onclick="showArticle(event, '${news.attachment}')"><i class="fa fa-file-alt"></i> 記事を読む</a>`;
+              }
+          }
           html += `<tr><th>${news.date}</th><td>${contentHtml}</td></tr>`;
       });
       html += `</table>`;
@@ -112,6 +116,53 @@ function showPopup(event, attachment) {
       popupImage.src = attachment;
       popup.style.display = "flex"; // CSSのflexboxを有効にして表示
   }
+}
+
+async function showArticle(event, mdPath) {
+    event.preventDefault();
+    const articlePopup = document.getElementById("article-popup");
+    const articleContent = document.getElementById("article-content");
+    
+    if (articlePopup && articleContent) {
+        try {
+            const response = await fetch(mdPath);
+            if (!response.ok) throw new Error('記事の読み込みに失敗');
+            const mdText = await response.text();
+            
+            // marked.jsが読み込まれていなければ読み込む
+            if (typeof marked === 'undefined') {
+                await new Promise((resolve) => {
+                    const script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
+                    script.onload = resolve;
+                    document.body.appendChild(script);
+                });
+            }
+            
+            articleContent.innerHTML = marked.parse(mdText);
+            articlePopup.style.display = "flex";
+        } catch (error) {
+            articleContent.innerHTML = `<p>${error.message}</p>`;
+            articlePopup.style.display = "flex";
+        }
+    }
+}
+
+function hideArticlePopup() {
+    const articlePopup = document.getElementById("article-popup");
+    if (articlePopup) {
+        articlePopup.style.display = "none";
+    }
+}
+
+const articlePopup = document.getElementById("article-popup");
+if (articlePopup) {
+    document.getElementById("article-popup-close").addEventListener("click", hideArticlePopup);
+    articlePopup.addEventListener("click", function (event) {
+        if (event.target === articlePopup) {
+            hideArticlePopup();
+        }
+    });
 }
 
 function hidePopup() {

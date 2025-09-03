@@ -114,6 +114,23 @@ a.profile-link {
     transform: scale(1.15);
 }
 
+.keywords-container {
+    margin-top: 10px;
+    min-height: 20px;
+    line-height: 1.5;
+}
+
+.keyword-tag {
+    display: inline-block;
+    background-color: var(--blue);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin: 3px;
+    font-weight: 500;
+}
+
 .logo {
     position: fixed;
     bottom: 3vh;
