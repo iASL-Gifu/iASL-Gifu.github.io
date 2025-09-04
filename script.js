@@ -196,3 +196,46 @@ function goBackOrRedirect() {
       window.location.href = "/index.html";
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const backgroundAnimation = document.getElementById('background-animation');
+
+    // ★ここにアニメーションさせたい画像のパスを2〜4種類指定してください★
+    const iconImages = [
+        '/img/logo_clear.png',
+        '/img/tire.png',
+        '/img/github.png',
+        '/img/saku-logo.png'
+    ];
+
+    function createIcon() {
+        if (!backgroundAnimation) return;
+
+        const icon = document.createElement('img');
+        icon.classList.add('floating-icon');
+        
+        // iconImages配列からランダムに画像を選ぶ
+        icon.src = iconImages[Math.floor(Math.random() * iconImages.length)];
+
+        // アイコンのプロパティをランダムに設定
+        const size = Math.random() * 80 + 40; // 40px 〜 120px
+        const duration = Math.random() * 15 + 10; // 10秒 〜 25秒
+        const leftPosition = Math.random() * 100; // 0% 〜 100%
+
+        icon.style.width = `${size}px`;
+        icon.style.height = 'auto';
+        icon.style.left = `${leftPosition}vw`;
+        icon.style.animationDuration = `${duration}s`;
+        icon.style.animationDelay = `${Math.random() * 5}s`; // 開始タイミングをずらす
+
+        backgroundAnimation.appendChild(icon);
+
+        // アニメーション終了後に要素を削除
+        setTimeout(() => {
+            icon.remove();
+        }, (duration + 5) * 1000);
+    }
+
+    // 指定した間隔（ミリ秒）でアイコンを生成（例：2秒ごと）
+    setInterval(createIcon, 2000);
+});
