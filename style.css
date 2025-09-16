@@ -295,7 +295,10 @@ ul {
 .panel__headline {
     font-weight: 700;
     opacity: 0.8;
-    font-size: 48px;
+    /* 画面幅に応じて文字サイズを滑らかに調整 */
+    font-size: clamp(28px, 5vw, 48px);
+    line-height: 1.2; /* 改行された際の行間を詰めて見た目を改善 */
+    letter-spacing: -0.02em; /* 文字間を少し詰めてコンパクトに */
     margin: 0 0 25px 0;
 }
 
@@ -754,8 +757,9 @@ a.btn-engine-start-in span {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    letter-spacing: -0.1em;
     margin: 0 0 0 0;
-    font-size: 15vw;
+    font-size: 8vw;
     font-weight: bold;
 }
 
@@ -1064,6 +1068,104 @@ a.btn-engine-start-in span {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+#article-content pre {
+    background-color: #282c34; /* ダークテーマの背景色 */
+    color: #abb2bf; /* 明るいグレーの文字色 */
+    padding: 1.5em 1em 1em 1em; /* パディングを調整 */
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5em 0;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.9em;
+    position: relative; /* ラベルを配置するための基準 */
+}
+
+/* codeタグ自体のスタイル */
+#article-content pre code {
+    background-color: transparent; /* 親の背景色を継承 */
+    padding: 0;
+    color: inherit;
+}
+
+/* インラインの `code` タグ */
+#article-content p code, #article-content li code {
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.9em;
+    color: #c7254e; /* 文字色 */
+}
+
+/* 言語ラベルの共通スタイル */
+#article-content pre[class*="language-"]::before {
+    position: absolute;
+    top: 0;
+    right: 15px;
+    padding: 2px 8px;
+    font-size: 0.8em;
+    font-family: sans-serif;
+    color: white;
+    border-radius: 0 0 5px 5px;
+    text-transform: uppercase;
+}
+
+/* Python用ラベル */
+#article-content pre[class*="language-python"]::before {
+    content: 'python';
+    background-color: #3572A5;
+}
+
+/* Bash/Shell用ラベル */
+#article-content pre[class*="language-bash"]::before,
+#article-content pre[class*="language-sh"]::before,
+#article-content pre[class*="language-shell"]::before {
+    content: 'bash';
+    background-color: #89e051;
+    color: #333;
+}
+
+/* JavaScript用ラベル */
+#article-content pre[class*="language-js"]::before {
+    content: 'javascript';
+    background-color: #f1e05a;
+    color: #333;
+}
+
+
+/* 2. リストのスタイル */
+
+/* 箇条書きリスト (点) */
+#article-content ul {
+    list-style: none; /* デフォルトの黒丸を削除 */
+    padding-left: 1.2em;
+}
+
+#article-content ul li {
+    position: relative;
+    padding-left: 1.2em; /* マーカー分のスペースを確保 */
+    margin-bottom: 0.5em;
+}
+
+#article-content ul li::before {
+    content: '■'; /* マーカーの形状 */
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    color: var(--blue); /* テーマカラーを使用 */
+    font-size: 0.8em;
+}
+
+/* 番号付きリスト */
+#article-content ol {
+    padding-left: 2.2em;
+}
+
+#article-content ol li {
+    padding-left: 0.5em;
+    margin-bottom: 0.5em;
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .article-popup-content {
@@ -1127,4 +1229,19 @@ a.btn-engine-start-in span {
         transform: translateY(-120vh); /* 画面上部へ移動 */
         opacity: 0;
     }
+}
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
 }

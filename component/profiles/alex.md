@@ -17,10 +17,10 @@
 - ヒューマンインターフェース
 - デジタルツイン
 
-## 研究紹介
+<!-- ## 研究紹介
 <div class="slide-container">
   <iframe src="https://docs.google.com/presentation/d/1vFw3FhVVgzEEcM3ZwML4IEEnCVqIC-ZBCAFfbDoBujk/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-</div>
+</div> -->
 
 ## 趣味
 - ハイキング

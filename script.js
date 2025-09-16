@@ -203,9 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ★ここにアニメーションさせたい画像のパスを2〜4種類指定してください★
     const iconImages = [
         '/img/logo_clear.png',
-        '/img/tire.png',
-        '/img/github.png',
-        '/img/saku-logo.png'
+        '/img/pix2.png',
+        '/img/calypso_b.png',
+        '/img/robot_b.png'
     ];
 
     function createIcon() {

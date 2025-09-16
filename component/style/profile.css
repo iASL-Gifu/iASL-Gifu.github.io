@@ -3,11 +3,18 @@
     --white: #ffffff;
     --blue: #5fc7ea;
     --yellow: #e6d068;
+    --light-gray: #f8f9fa;
+    --gray: #6c757d;
+    --code-bg: #2d2d2d;
 }
 
 body {
     background-color: var(--blue);
-    font-family: 'Zen Maru Gothic', sans-serif; /* 以前設定したフォント */
+    /* 【絵文字対応】
+      システムの絵文字フォントをフォールバックとして追加し、
+      異なる環境でも絵文字が正しく表示されるようにします。
+    */
+    font-family: 'Zen Maru Gothic', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .profile-container {
@@ -19,13 +26,15 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* 以下はMarkdownから変換されたHTML要素のスタイル */
+/* === Markdownから変換されたHTML要素のスタイル === */
+
 #profile-content h1 {
     font-size: 2.5rem;
     color: var(--nav-bg);
     border-bottom: 4px solid var(--yellow);
     padding-bottom: 10px;
     margin-top: 0;
+    margin-bottom: 30px; /* 見出し下の余白を調整 */
 }
 
 #profile-content h2 {
@@ -34,6 +43,7 @@ body {
     border-left: 10px solid var(--yellow);
     padding-left: 15px;
     margin-top: 40px;
+    margin-bottom: 20px; /* 見出し下の余白を調整 */
 }
 
 #profile-content p {
@@ -42,11 +52,27 @@ body {
     color: #333;
 }
 
+/* 【画像サイズの修正】
+  - 通常の画像は中央に配置し、適度な影をつけて立体感を演出します。
+  - プロフィール画像（h1見出しのすぐ下にある画像）は円形に切り抜き、サイズを固定します。
+*/
 #profile-content img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-top: 15px;
+    margin: 20px auto; /* 上下のマージンと中央寄せ */
+    display: block; /* 中央寄せのためにブロック要素に */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* プロフィール画像用の特別スタイル */
+#profile-content h1 + p > img {
+    width: 60%;                  /* コンテナの幅の60%に設定 */
+    aspect-ratio: 1 / 1;         /* 横幅を基準に高さを1:1に保ち、正方形にする */
+    object-fit: cover;           /* 画像を歪ませずに領域を埋め、はみ出た部分をトリミング */
+    object-position: center;     /* 画像の中心を基準にトリミング */
+    border-radius: 8px;          /* 角を少し丸める */
+    margin: 0 auto 30px;         /* 上下の余白と左右中央寄せ */
 }
 
 #profile-content a {
@@ -66,13 +92,68 @@ body {
     margin-bottom: 10px;
 }
 
+/* 【コードブロックの修正】
+  - インラインコードとコードブロックの両方に見やすいスタイルを追加します。
+  - ダークテーマの背景に、読みやすい文字色と等幅フォントを設定します。
+*/
+/* インラインコード (`like this`) */
+#profile-content p > code, #profile-content li > code {
+    background-color: #e9ecef;
+    color: #c7254e;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+/* コードブロック (```) */
+#profile-content pre {
+    background-color: var(--code-bg);
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto; /* 横に長いコードはスクロール可能に */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin: 25px 0;
+}
+
+#profile-content pre code {
+    color: var(--white);
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    background: none; /* 親(pre)の背景色を使うのでリセット */
+    padding: 0;
+}
+
+/* === その他のデザイン改善 === */
+
+/* 引用 (>) */
+#profile-content blockquote {
+    border-left: 5px solid var(--blue);
+    background-color: var(--light-gray);
+    margin: 20px 0;
+    padding: 15px 20px;
+    color: var(--gray);
+}
+#profile-content blockquote p {
+    margin: 0; /* 引用内の段落の余白をリセット */
+}
+
+/* 水平線 (---) */
+#profile-content hr {
+    border: none;
+    height: 2px;
+    background-color: #e0e0e0;
+    margin: 40px 0;
+}
+
+
 .slide-container {
     position: relative;
     overflow: hidden;
     width: 100%;
-    padding-top: 56.25%; /* アスペクト比 16:9 の場合 */
+    padding-top: 56.25%;
     margin: 20px 0;
-    border-radius: 8px; /* 角を少し丸める */
+    border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -85,7 +166,6 @@ body {
     border: 0;
 }
 
-/* 戻るボタンのスタイル調整 */
 .logo i {
     font-size: 9vh;
     color: var(--nav-bg);
@@ -104,5 +184,13 @@ body {
     }
     #profile-content h2 {
         font-size: 1.5rem;
+    }
+    
+    /* 【レスポンシブ対応の強化】
+       画面が小さいデバイスでは、プロフィール画像をさらに大きく表示し、
+       視認性を向上させます。
+    */
+    #profile-content h1 + p > img {
+        width: 85%;
     }
 }

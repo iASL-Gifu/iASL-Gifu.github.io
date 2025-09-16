@@ -22,7 +22,7 @@
     <script>
         // 【重要】スプレッドシートの公開URLをここに貼り付け
         const SPREADSHEET_URL = '/component/profiles/members.csv';
-
+    
         function goBackOrRedirect() {
             if (document.referrer.includes('/component/members_list.html')) {
                 window.history.back();
@@ -30,7 +30,7 @@
                 window.location.href = "/component/members_list.html";
             }
         }
-
+    
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const memberId = params.get('id');
@@ -47,42 +47,49 @@
                     // 該当するIDのメンバーを探す
                     const targetMember = members.find(m => m.id === memberId);
                     if (!targetMember) throw new Error('指定されたメンバーが見つかりません。');
-
+    
                     // スプレッドシートから取得したローカルパスを使ってMDファイルを取得
                     const markdownPath = targetMember.mdPath;
-                    if (!markdownPath) throw new Error('プロフィールファイルのパスが指定されていません。');
-
+                    if (!markdownPath) {
+                        // throw new Error('プロフィールファイルのパスが指定されていません。');
+                        // alert('プロフィールファイルが見つかりませんでした。メンバーリストのページに戻ります。');
+                        window.location.href = "/component/members_list.html";
+                        return;
+                    }
                     const mdResponse = await fetch(markdownPath);
-                    if (!mdResponse.ok) throw new Error('プロフィールファイルの読み込みに失敗しました。');
-
+    
                     const markdownText = await mdResponse.text();
                     document.getElementById('profile-content').innerHTML = marked.parse(markdownText);
-
+    
                 } catch (error) {
+                    // MDファイル以外のエラーはこちらで処理される
                     handleError(error.message);
                 }
             } else {
                 handleError('メンバーが指定されていません。');
+                alert('プロフィールファイルが見つかりませんでした。メンバーリストのページに戻ります。');
+                window.location.href = "/component/members_list.html";
+                return; // 処理を中断
             }
         });
-
+    
         function handleError(message) {
             console.error('Error:', message);
             document.getElementById('profile-content').innerHTML = `<p style="text-align: center;">${message}</p>`;
         }
-
+    
         function parseCSV(text) {
             // Windowsの改行コード(CRLF)とMac/Linuxの改行コード(LF)の両方に対応
             const lines = text.trim().split(/\r?\n/);
             if (lines.length === 0) return [];
-
+    
             const headers = lines[0].split(',').map(h => h.trim());
             const members = [];
-
+    
             for (let i = 1; i < lines.length; i++) {
                 // 空白行を無視する
                 if (lines[i].trim() === '') continue;
-
+    
                 const values = lines[i].split(',').map(v => v.trim());
                 const member = {};
                 headers.forEach((header, index) => {
