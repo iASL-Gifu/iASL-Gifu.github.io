@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/component/style/profile.css">
 </head>
-<body>
+<body class="profile-page">
     <div class="profile-container">
         <div id="profile-content">
             <p>読み込み中...</p>
         </div>
     </div>
 
-    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>

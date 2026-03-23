@@ -1,241 +1,482 @@
-var menu = document.querySelector('.nav__list');
-var burger = document.querySelector('.burger');
-var doc = $(document);
-var l = $('.scrolly');
-var panel = $('.panel');
-var vh = $(window).height();
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-var openMenu = function() {
-  burger.classList.toggle('burger--active');
-  menu.classList.toggle('nav__list--active');
-};
+let scrollIndicatorTicking = false;
+let backgroundIntervalId = null;
 
-panel.eq(0).find('.panel__content').addClass('panel__content--active');
+function splitCsvLine(line) {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
 
-var scrollFx = function() {
-  var ds = doc.scrollTop();
-  var of = vh / 4;
-  
-  for (var i = 0; i < panel.length; i++) {
-    if (panel.eq(i).offset().top < ds+of) {
-     panel.eq(i).find('.panel__content').addClass('panel__content--active');
-    } else {
-      panel.eq(i).find('.panel__content').removeClass('panel__content--active')
+    for (let i = 0; i < line.length; i += 1) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+
+        if (char === '"' && inQuotes && nextChar === '"') {
+            current += '"';
+            i += 1;
+            continue;
+        }
+
+        if (char === '"') {
+            inQuotes = !inQuotes;
+            continue;
+        }
+
+        if (char === ',' && !inQuotes) {
+            values.push(current.trim());
+            current = '';
+            continue;
+        }
+
+        current += char;
     }
-  }
-};
 
-var scrolly = function(e) {
-  e.preventDefault();
-  var target = this.hash;
-  var $target = $(target);
-
-  $('html, body').stop().animate({
-      'scrollTop': $target.offset().top
-  }, 300, 'swing', function () {
-      window.location.hash = target;
-  });
+    values.push(current.trim());
+    return values;
 }
-
-var init = function() {
-  burger.addEventListener('click', openMenu, false);
-  window.addEventListener('scroll', scrollFx, false);
-  window.addEventListener('load', scrollFx, false);
-  $('a[href^="#"]').on('click',scrolly);
-};
-
-document.addEventListener('DOMContentLoaded', init);
-
-window.addEventListener("scroll", () => {
-    let scrollHeight = document.documentElement.scrollHeight;
-    let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    let clientHeight = document.documentElement.clientHeight;
-    let scrollPercent = scrollTop / (scrollHeight - clientHeight);
-    let rotateAngle = scrollPercent * 360 * 5;
-    
-    if (document.querySelector('.scroll_indicator')) {
-        document.querySelector('.scroll_indicator').style.top = (scrollPercent * (window.innerHeight - 50)) + "px";
-        document.querySelector('.scroll_indicator').style.transform = 'rotate(' + rotateAngle + 'deg)';
-    }
-});
 
 function parseNewsCSV(text) {
     const lines = text.trim().split(/\r?\n/);
-    if (lines.length < 2) return [];
-    const headers = lines[0].split(',').map(h => h.trim());
-    const newsItems = [];
-    for (let i = 1; i < lines.length; i++) {
-        if (lines[i].trim() === '') continue;
-        const values = lines[i].split(',').map(v => v.trim());
-        const item = {};
-        headers.forEach((header, index) => {
-            item[header] = values[index];
-        });
-        newsItems.push(item);
+    if (lines.length < 2) {
+        return [];
     }
-    return newsItems;
+
+    const headers = splitCsvLine(lines[0]);
+
+    return lines.slice(1).filter(Boolean).map((line) => {
+        const values = splitCsvLine(line);
+        const item = {};
+
+        headers.forEach((header, index) => {
+            item[header] = values[index] || '';
+        });
+
+        return item;
+    });
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function setMenuOpen(isOpen) {
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.nav__list');
+
+    if (!burger || !menu) {
+        return;
+    }
+
+    burger.classList.toggle('burger--active', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    menu.classList.toggle('nav__list--active', isOpen);
+}
+
+function initNavigation() {
+    const nav = document.querySelector('.nav');
+    const burger = document.querySelector('.burger');
+    const menu = document.querySelector('.nav__list');
+
+    if (!nav || !burger || !menu) {
+        return;
+    }
+
+    burger.addEventListener('click', () => {
+        const isOpen = !menu.classList.contains('nav__list--active');
+        setMenuOpen(isOpen);
+    });
+
+    menu.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', () => {
+            setMenuOpen(false);
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!menu.classList.contains('nav__list--active')) {
+            return;
+        }
+
+        if (!nav.contains(event.target)) {
+            setMenuOpen(false);
+        }
+    });
+}
+
+function initPanelReveal() {
+    const panelContents = Array.from(document.querySelectorAll('.panel .panel__content'));
+
+    if (!panelContents.length) {
+        return;
+    }
+
+    if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
+        panelContents.forEach((content) => content.classList.add('panel__content--active'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, entryObserver) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                return;
+            }
+
+            entry.target.classList.add('panel__content--active');
+            entryObserver.unobserve(entry.target);
+        });
+    }, {
+        threshold: 0.18,
+        rootMargin: '0px 0px -10% 0px',
+    });
+
+    panelContents.forEach((content) => observer.observe(content));
+}
+
+function initAnchorScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const hash = link.getAttribute('href');
+            if (!hash || hash === '#') {
+                return;
+            }
+
+            const target = document.querySelector(hash);
+            if (!target) {
+                return;
+            }
+
+            event.preventDefault();
+            target.scrollIntoView({
+                behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+                block: 'start',
+            });
+
+            history.replaceState(null, '', hash);
+        });
+    });
+}
+
+function updateScrollIndicator() {
+    const scrollIndicator = document.querySelector('.scroll_indicator');
+    const scrollTrack = scrollIndicator ? scrollIndicator.closest('.tire') : null;
+    if (!scrollIndicator) {
+        scrollIndicatorTicking = false;
+        return;
+    }
+
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+    const maxScroll = Math.max(scrollHeight - clientHeight, 0);
+
+    if (maxScroll === 0 || prefersReducedMotion.matches) {
+        scrollIndicator.style.opacity = '0';
+        scrollIndicator.style.transform = 'translateY(0) rotate(0deg)';
+        scrollIndicatorTicking = false;
+        return;
+    }
+
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+    const scrollPercent = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+    const edgeGap = Math.min(Math.max(window.innerHeight * 0.04, 24), 40);
+    const trackTop = scrollTrack ? Number.parseFloat(window.getComputedStyle(scrollTrack).top) || 0 : edgeGap;
+    const trackHeight = scrollTrack ? scrollTrack.getBoundingClientRect().height : scrollIndicator.getBoundingClientRect().height;
+    const travel = Math.max(window.innerHeight - trackTop - trackHeight - edgeGap, 0);
+    const translateY = travel * scrollPercent;
+    const rotateAngle = scrollPercent * 1440;
+
+    scrollIndicator.style.opacity = '0.9';
+    scrollIndicator.style.transform = `translateY(${translateY}px) rotate(${rotateAngle}deg)`;
+    scrollIndicatorTicking = false;
+}
+
+function requestScrollIndicatorUpdate() {
+    if (scrollIndicatorTicking) {
+        return;
+    }
+
+    scrollIndicatorTicking = true;
+    window.requestAnimationFrame(updateScrollIndicator);
+}
+
+function initScrollIndicator() {
+    if (!document.querySelector('.scroll_indicator')) {
+        return;
+    }
+
+    updateScrollIndicator();
+    window.addEventListener('scroll', requestScrollIndicatorUpdate, { passive: true });
+    window.addEventListener('resize', requestScrollIndicatorUpdate);
+}
+
+function bindNewsActions(container) {
+    container.querySelectorAll('[data-popup-image]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            showPopup(event, link.dataset.popupImage);
+        });
+    });
+
+    container.querySelectorAll('[data-article-path]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            showArticle(event, link.dataset.articlePath);
+        });
+    });
+}
+
+function renderNews(newsData) {
+    const container = document.getElementById('news-container');
+    if (!container) {
+        return;
+    }
+
+    const html = `
+        <div class="news-list">
+            ${newsData.map((news) => {
+                const actions = [];
+
+                if (news.attachment) {
+                    if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
+                        actions.push(`
+                            <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-popup-image="${escapeHtml(news.attachment)}">
+                                <i class="fa fa-image" aria-hidden="true"></i>写真を見る
+                            </a>
+                        `);
+                    } else if (/\.md$/i.test(news.attachment)) {
+                        actions.push(`
+                            <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-article-path="${escapeHtml(news.attachment)}">
+                                <i class="fa fa-file-alt" aria-hidden="true"></i>記事を読む
+                            </a>
+                        `);
+                    }
+                }
+
+                return `
+                    <article class="news-item">
+                        <div class="news-date">${escapeHtml(news.date)}</div>
+                        <div class="news-body">
+                            <p class="news-copy">${escapeHtml(news.content)}</p>
+                            ${actions.length ? `<div class="news-actions">${actions.join('')}</div>` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('')}
+        </div>
+    `;
+
+    container.innerHTML = html;
+    bindNewsActions(container);
 }
 
 async function fetchNews() {
-  const csvPath = "/component/news.csv";
-  try {
-      const response = await fetch(csvPath);
-      if (!response.ok) throw new Error('news.csvの読み込みに失敗');
-      
-      const csvText = await response.text();
-      const newsData = parseNewsCSV(csvText);
+    const container = document.getElementById('news-container');
+    if (!container) {
+        return;
+    }
 
-      newsData.reverse();
-
-      let html = `<table>`;
-      newsData.forEach(news => {
-          let contentHtml = news.content;
-          if (news.attachment) {
-              if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
-                  contentHtml += ` <a href="${news.attachment}" class="news-attachment-link" onclick="showPopup(event, '${news.attachment}')"><i class="fa fa-image"></i>写真を見る</a>`;
-              } else if (news.attachment.endsWith('.md')) {
-                  contentHtml += ` <a href="${news.attachment}" class="news-attachment-link" onclick="showArticle(event, '${news.attachment}')"><i class="fa fa-file-alt"></i> 記事を読む</a>`;
-              }
-          }
-          html += `<tr><th>${news.date}</th><td>${contentHtml}</td></tr>`;
-      });
-      html += `</table>`;
-
-      document.getElementById("news-container").innerHTML = html;
-  } catch (error) {
-      console.error("データ取得エラー:", error);
-      document.getElementById("news-container").innerHTML = "お知らせを取得できませんでした。";
-  }
-}
-
-function showPopup(event, attachment) {
-  event.preventDefault();
-  const popup = document.getElementById("popup");
-  const popupImage = document.getElementById("popup-image");
-  if (popup && popupImage) {
-      popupImage.src = attachment;
-      popup.style.display = "flex"; // CSSのflexboxを有効にして表示
-  }
-}
-
-async function showArticle(event, mdPath) {
-    event.preventDefault();
-    const articlePopup = document.getElementById("article-popup");
-    const articleContent = document.getElementById("article-content");
-    
-    if (articlePopup && articleContent) {
-        try {
-            const response = await fetch(mdPath);
-            if (!response.ok) throw new Error('記事の読み込みに失敗');
-            const mdText = await response.text();
-            
-            // marked.jsが読み込まれていなければ読み込む
-            if (typeof marked === 'undefined') {
-                await new Promise((resolve) => {
-                    const script = document.createElement('script');
-                    script.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
-                    script.onload = resolve;
-                    document.body.appendChild(script);
-                });
-            }
-            
-            articleContent.innerHTML = marked.parse(mdText);
-            articlePopup.style.display = "flex";
-        } catch (error) {
-            articleContent.innerHTML = `<p>${error.message}</p>`;
-            articlePopup.style.display = "flex";
+    try {
+        const response = await fetch('/component/news.csv');
+        if (!response.ok) {
+            throw new Error('news.csvの読み込みに失敗');
         }
+
+        const csvText = await response.text();
+        const newsData = parseNewsCSV(csvText).reverse();
+        renderNews(newsData);
+    } catch (error) {
+        console.error('データ取得エラー:', error);
+        container.textContent = 'お知らせを取得できませんでした。';
     }
 }
 
-function hideArticlePopup() {
-    const articlePopup = document.getElementById("article-popup");
-    if (articlePopup) {
-        articlePopup.style.display = "none";
-    }
-}
+function showPopup(eventOrAttachment, attachmentArg) {
+    const popup = document.getElementById('popup');
+    const popupImage = document.getElementById('popup-image');
+    const event = typeof eventOrAttachment === 'object' ? eventOrAttachment : null;
+    const attachment = typeof eventOrAttachment === 'string' ? eventOrAttachment : attachmentArg;
 
-const articlePopup = document.getElementById("article-popup");
-if (articlePopup) {
-    document.getElementById("article-popup-close").addEventListener("click", hideArticlePopup);
-    articlePopup.addEventListener("click", function (event) {
-        if (event.target === articlePopup) {
-            hideArticlePopup();
-        }
-    });
+    if (event) {
+        event.preventDefault();
+    }
+
+    if (!popup || !popupImage || !attachment) {
+        return;
+    }
+
+    popupImage.src = attachment;
+    popup.style.display = 'flex';
 }
 
 function hidePopup() {
-    const popup = document.getElementById("popup");
-    if (popup) {
-        popup.style.display = "none";
+    const popup = document.getElementById('popup');
+    const popupImage = document.getElementById('popup-image');
+
+    if (!popup || !popupImage) {
+        return;
     }
+
+    popup.style.display = 'none';
+    popupImage.removeAttribute('src');
 }
 
-// ポップアップ関連のイベントリスナー設定
-const popup = document.getElementById("popup");
-if (popup) {
-    document.getElementById("popup-close").addEventListener("click", hidePopup);
-    // 背景（オーバーレイ）クリックで閉じる
-    popup.addEventListener("click", function (event) {
-        // クリックされたのが背景自身である場合のみ閉じる
-        if (event.target === popup) {
-            hidePopup();
-        }
+async function ensureMarked() {
+    if (typeof marked !== 'undefined') {
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
     });
 }
 
-if (document.getElementById("news-container")) {
-    fetchNews();
+async function showArticle(eventOrPath, pathArg) {
+    const articlePopup = document.getElementById('article-popup');
+    const articleContent = document.getElementById('article-content');
+    const event = typeof eventOrPath === 'object' ? eventOrPath : null;
+    const mdPath = typeof eventOrPath === 'string' ? eventOrPath : pathArg;
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    if (!articlePopup || !articleContent || !mdPath) {
+        return;
+    }
+
+    try {
+        const response = await fetch(mdPath);
+        if (!response.ok) {
+            throw new Error('記事の読み込みに失敗');
+        }
+
+        const mdText = await response.text();
+        await ensureMarked();
+        articleContent.innerHTML = marked.parse(mdText);
+    } catch (error) {
+        articleContent.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+    }
+
+    articlePopup.style.display = 'flex';
+}
+
+function hideArticlePopup() {
+    const articlePopup = document.getElementById('article-popup');
+    if (!articlePopup) {
+        return;
+    }
+
+    articlePopup.style.display = 'none';
+}
+
+function initPopups() {
+    const popup = document.getElementById('popup');
+    const popupClose = document.getElementById('popup-close');
+    const articlePopup = document.getElementById('article-popup');
+    const articlePopupClose = document.getElementById('article-popup-close');
+
+    if (popup && popupClose) {
+        popupClose.addEventListener('click', hidePopup);
+        popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                hidePopup();
+            }
+        });
+    }
+
+    if (articlePopup && articlePopupClose) {
+        articlePopupClose.addEventListener('click', hideArticlePopup);
+        articlePopup.addEventListener('click', (event) => {
+            if (event.target === articlePopup) {
+                hideArticlePopup();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') {
+            return;
+        }
+
+        hidePopup();
+        hideArticlePopup();
+        setMenuOpen(false);
+    });
 }
 
 function goBackOrRedirect() {
-  if (document.referrer) {
-      window.history.back();
-  } else {
-      window.location.href = "/index.html";
-  }
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = '/index.html';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initBackgroundAnimation() {
     const backgroundAnimation = document.getElementById('background-animation');
+    if (!backgroundAnimation || prefersReducedMotion.matches) {
+        return;
+    }
 
-    // ★ここにアニメーションさせたい画像のパスを2〜4種類指定してください★
     const iconImages = [
         '/img/logo_clear.png',
         '/img/pix2.png',
         '/img/calypso_b.png',
-        '/img/robot_b.png'
+        '/img/robot_b.png',
     ];
 
-    function createIcon() {
-        if (!backgroundAnimation) return;
+    const createIcon = () => {
+        if (document.hidden || backgroundAnimation.childElementCount > 6) {
+            return;
+        }
 
         const icon = document.createElement('img');
+        const size = Math.random() * 56 + 42;
+        const duration = Math.random() * 12 + 16;
+
         icon.classList.add('floating-icon');
-        
-        // iconImages配列からランダムに画像を選ぶ
         icon.src = iconImages[Math.floor(Math.random() * iconImages.length)];
-
-        // アイコンのプロパティをランダムに設定
-        const size = Math.random() * 80 + 40; // 40px 〜 120px
-        const duration = Math.random() * 15 + 10; // 10秒 〜 25秒
-        const leftPosition = Math.random() * 100; // 0% 〜 100%
-
+        icon.alt = '';
         icon.style.width = `${size}px`;
-        icon.style.height = 'auto';
-        icon.style.left = `${leftPosition}vw`;
+        icon.style.left = `${Math.random() * 100}vw`;
         icon.style.animationDuration = `${duration}s`;
-        icon.style.animationDelay = `${Math.random() * 5}s`; // 開始タイミングをずらす
+        icon.style.animationDelay = `${Math.random() * 1.5}s`;
 
         backgroundAnimation.appendChild(icon);
 
-        // アニメーション終了後に要素を削除
-        setTimeout(() => {
+        window.setTimeout(() => {
             icon.remove();
-        }, (duration + 5) * 1000);
-    }
+        }, duration * 1000 + 1800);
+    };
 
-    // 指定した間隔（ミリ秒）でアイコンを生成（例：2秒ごと）
-    setInterval(createIcon, 2000);
+    createIcon();
+    createIcon();
+    backgroundIntervalId = window.setInterval(createIcon, 4200);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initPanelReveal();
+    initAnchorScrolling();
+    initScrollIndicator();
+    initPopups();
+    initBackgroundAnimation();
+
+    if (document.getElementById('news-container')) {
+        fetchNews();
+    }
+});
+
+window.addEventListener('beforeunload', () => {
+    if (backgroundIntervalId) {
+        window.clearInterval(backgroundIntervalId);
+    }
 });

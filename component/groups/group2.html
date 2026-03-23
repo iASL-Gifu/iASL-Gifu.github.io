@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="research-page">
     <div id="background-animation"></div>
-    <nav class="nav">
-        <div class="burger">
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
             <div class="burger__patty"></div>
-        </div>
+        </button>
         
         <ul class="nav__list">
             <li class="nav__item">
-            <a href="#1" class="nav__link c-yellow"><i class="fa fa-wifi"></i></a>
+            <a href="#1" class="nav__link c-yellow" aria-label="身体認知システム"><i class="fa fa-wifi" aria-hidden="true"></i></a>
             </li>
             <!-- <li class="nav__item">
             <a href="#2" class="nav__link c-blue"><i class="fa fa-earth-asia"></i></a>
@@ -51,7 +51,7 @@
                 <div class="panel__block"></div>
                 <div class="panel__content__flex">
                     <div class="panel__content__left">
-                        <img src="/img/research/monitoring.png">
+                        <img src="/img/research/monitoring.png" alt="" loading="lazy">
                     </div>
                     <div class="panel__content__right">
                         <p>運転手の状況だけでなく車内の状況を把握することで、より安全な運転支援が可能になります。</p>
@@ -77,11 +77,13 @@
             </div>
         </article>
     </section> -->
-    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
-    <a href="#0" class="tire"><div class="scroll_indicator"></div></a>
-    <div id="popup">
-        <span id="popup-close">✖</span>
-        <img id="popup-image" src="">
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
+    <a href="#0" class="tire" aria-label="ページ先頭へ戻る"><div class="scroll_indicator"></div></a>
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <button id="popup-close" class="popup-close" type="button" aria-label="画像を閉じる">&times;</button>
+            <img id="popup-image" src="" alt="ポップアップ画像">
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script.js"></script>
