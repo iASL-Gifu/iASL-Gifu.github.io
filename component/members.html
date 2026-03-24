@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Members | iASL</title>
+    <base href="/">
     <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="members.css">
+    <link rel="stylesheet" href="/component/style/members.css">
 </head>
-<body>
+<body class="members-carousel-page">
     <div class="carousel">
         <div class="carousel-item">
             <div class="carousel-box">
@@ -207,9 +208,9 @@
         <button id="left_btn"><i class="fa fa-angle-left"></i></button>
         <button id="right_btn"><i class="fa fa-angle-right"></i></button>
     </div>
-    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="members.js"></script>
+    <script src="/hook/members.js"></script>
 </body>
 </html>
