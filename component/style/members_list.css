@@ -1,156 +1,206 @@
-:root {
-    --nav-bg: #2b3033;
-    --white: #ffffff;
-    --blue: #5fc7ea;
-    --yellow: #e6d068;
-}
-
-body {
-    background-color: var(--blue);
-    font-family: 'Montserrat', sans-serif; 
-    color: var(--nav-bg);
+body.members-list-page {
+    background:
+        radial-gradient(circle at top right, rgba(95, 199, 234, 0.22), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(230, 208, 104, 0.18), transparent 36%),
+        linear-gradient(180deg, #f7fbff 0%, #edf3f8 100%);
 }
 
 .container {
-    max-width: 900px;
+    width: min(1200px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 56px 0 96px;
     position: relative;
-    z-index: 3;
+    z-index: 1;
 }
 
 .page-title {
+    margin: 0 0 28px;
     text-align: center;
-    font-size: 3rem;
-    color: var(--white);
-    margin-bottom: 40px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    color: var(--text-strong);
+    font-size: clamp(2.4rem, 1.7rem + 2vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.loading-message {
+    margin: 0;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 1rem;
 }
 
 .member-group {
-    margin-bottom: 40px;
+    margin-bottom: 28px;
+    padding: 28px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px);
+}
+
+.member-group--ob {
+    padding-bottom: 22px;
 }
 
 .grade-title {
-    font-size: 2.2rem;
-    color: var(--white);
-    padding-bottom: 10px;
-    border-bottom: 3px solid var(--yellow);
-    margin-bottom: 20px;
+    margin: 0 0 20px;
+    padding-bottom: 14px;
+    color: var(--text-strong);
+    font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+    border-bottom: 3px solid rgba(13, 95, 133, 0.18);
 }
 
 .member-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 250px);
-    gap: 25px;
-    /* ★★★ 修正点：常に左揃えになるように justify-content を変更 ★★★ */
-    justify-content: flex-start; 
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.ob-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ob-name {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(95, 199, 234, 0.12);
+    border: 1px solid rgba(95, 199, 234, 0.2);
+    color: var(--text-strong);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.4;
 }
 
 .member-card {
-    background-color: var(--white);
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100%;
+    padding: 22px 18px 18px;
+    border-radius: 24px;
+    background: rgba(248, 250, 252, 0.92);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .member-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    border-color: rgba(95, 199, 234, 0.38);
+    box-shadow: 0 22px 42px rgba(15, 23, 42, 0.1);
 }
 
 a.profile-link {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
 
 .profile-pic {
-    width: 150px;
-    height: 150px;
+    width: 144px;
+    height: 144px;
+    margin-bottom: 16px;
+    border: 5px solid rgba(230, 208, 104, 0.68);
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px;
-    border: 5px solid var(--yellow);
-    flex-shrink: 0;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
 }
 
 .member-info {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    flex-grow: 1; 
+    gap: 12px;
+    flex-grow: 1;
 }
 
 .member-name {
-    font-weight: bold;
-    font-size: 1.4rem;
-    text-align: center;
-    flex-grow: 1;
+    margin: 0;
+    min-height: 3.2em;
     display: flex;
     align-items: center;
+    justify-content: center;
+    color: var(--text-strong);
+    font-size: 1.22rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.keywords-container {
+    min-height: 48px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.keyword-tag {
+    display: inline-block;
+    margin: 4px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(95, 199, 234, 0.16);
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 700;
 }
 
 .social-icons {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    padding-top: 10px; 
-    min-height: 28px;
-    flex-shrink: 0;
+    gap: 12px;
+    min-height: 32px;
+    padding-top: 4px;
 }
 
 .social-icon {
-    width: 28px;
-    height: 28px;
-    transition: transform 0.2s ease;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .social-icon:hover {
-    transform: scale(1.15);
-}
-
-.keywords-container {
-    margin-top: 10px;
-    min-height: 20px;
-    line-height: 1.5;
-}
-
-.keyword-tag {
-    display: inline-block;
-    background-color: var(--blue);
-    color: white;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 0.8em;
-    margin: 3px;
-    font-weight: 500;
-}
-
-.logo {
-    position: fixed;
-    bottom: 3vh;
-    left: 3vw;
-    z-index: 2;
-}
-
-.logo i {
-    font-size: 9vh;
-    color: var(--nav-bg);
+    transform: scale(1.08);
+    filter: saturate(1.1);
 }
 
 @media (max-width: 640px) {
-    .logo i {
-        font-size: 7vh;
+    .container {
+        width: min(100% - 20px, 1200px);
+        padding: 36px 0 84px;
     }
-    /* スマートフォン表示では中央揃えに戻す */
+
+    .member-group {
+        padding: 20px 16px;
+        border-radius: 24px;
+    }
+
     .member-list {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+    }
+
+    .ob-list {
+        gap: 10px;
+    }
+
+    .ob-name {
+        width: 100%;
         justify-content: center;
+    }
+
+    .profile-pic {
+        width: 118px;
+        height: 118px;
+    }
+
+    .member-name {
+        min-height: auto;
+        font-size: 1.05rem;
     }
 }

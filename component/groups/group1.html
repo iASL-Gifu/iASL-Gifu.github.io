@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="research-page">
     <div id="background-animation"></div>
-    <nav class="nav">
-        <div class="burger">
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
             <div class="burger__patty"></div>
-        </div>
+        </button>
         
         <ul class="nav__list">
             <li class="nav__item">
-            <a href="#1" class="nav__link c-yellow"><i class="fa fa-wifi"></i></a>
+            <a href="#1" class="nav__link c-yellow" aria-label="センシング"><i class="fa fa-wifi" aria-hidden="true"></i></a>
             </li>
             <li class="nav__item">
-            <a href="#2" class="nav__link c-blue"><i class="fa fa-earth-asia"></i></a>
+            <a href="#2" class="nav__link c-blue" aria-label="環境・シミュレータ"><i class="fa fa-earth-asia" aria-hidden="true"></i></a>
             </li>
             <li class="nav__item">
-            <a href="#3" class="nav__link c-yellow"><i class="fa fa-brain"></i></a>
+            <a href="#3" class="nav__link c-yellow" aria-label="自動運転AI"><i class="fa fa-brain" aria-hidden="true"></i></a>
             </li>
         </ul>
     </nav>
@@ -51,7 +51,7 @@
                 <div class="panel__block"></div>
                 <div class="panel__content__flex">
                     <div class="panel__content__left">
-                        <img src="/img/research/sensing.jpg">
+                        <img src="/img/research/sensing.jpg" alt="" loading="lazy">
                     </div>
                     <div class="panel__content__right">
                         <p>自動運転では様々なセンサーを用いて周囲の状況を把握しています。</p>
@@ -72,8 +72,8 @@
                         <p>また、実際の運転体験に近い環境を再現することで、実際の運転状況における人間の行動をより正確に分析することが可能になります。</p>
                     </div>
                     <div class="panel__content__right">
-                        <img src="/img/research/mapping.png">
-                        <img src="/img/research/sim.png">
+                        <img src="/img/research/mapping.png" alt="" loading="lazy">
+                        <img src="/img/research/sim.png" alt="" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 <div class="panel__block"></div>
                 <div class="panel__content__flex">
                     <div class="panel__content__left">
-                        <img src="/img/research/autoware-architecture-overview.drawio.svg">
+                        <img src="/img/research/autoware-architecture-overview.drawio.svg" alt="" loading="lazy">
                     </div>
                     <div class="panel__content__right">
                         <p>自動運転AIは一言で言い表すことが難しい複雑なシステムです。図のような様々な分野が関与しています。よりレベルの高い自動運転を目指して全体だけでなく1つ1つの要素に注目し研究を行っています。</p>
@@ -96,11 +96,13 @@
             </div>
         </article>
     </section>
-    <a class="logo" onclick="goBackOrRedirect()"><i class="fa fa-circle-left"></i></a>
-    <a href="#0" class="tire"><div class="scroll_indicator"></div></a>
-    <div id="popup">
-        <span id="popup-close">✖</span>
-        <img id="popup-image" src="">
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
+    <a href="#0" class="tire" aria-label="ページ先頭へ戻る"><div class="scroll_indicator"></div></a>
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <button id="popup-close" class="popup-close" type="button" aria-label="画像を閉じる">&times;</button>
+            <img id="popup-image" src="" alt="ポップアップ画像">
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script.js"></script>

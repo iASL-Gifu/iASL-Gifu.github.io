@@ -1,16 +1,22 @@
-// CSVファイルのパスを指定
 const MEMBER_DATA_URL = '/component/profiles/members.csv';
+const GRADE_ORDER = ['Boss', 'PD', 'D3', 'D2', 'D1', 'M2', 'M1', 'B4', 'B3', 'OB'];
 
-// 学年の表示順を定義
-const GRADE_ORDER = ['Boss', 'PD', 'D3', 'D2', 'D1', 'M2', 'M1', 'B4', 'B3'];
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
-// 戻るボタンの関数
 function goBackOrRedirect() {
     if (document.referrer) {
         window.history.back();
-    } else {
-        window.location.href = "/index.html";
+        return;
     }
+
+    window.location.href = '/index.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,84 +29,108 @@ async function fetchMembersData() {
         if (!response.ok) {
             throw new Error('名簿データ(members.csv)の取得に失敗しました。');
         }
+
         const csvText = await response.text();
         const members = parseCSV(csvText);
-        
         displayMembers(members);
-
     } catch (error) {
         console.error('Error:', error);
+
         const container = document.getElementById('member-list-container');
-        container.innerHTML += `<p style="text-align: center; color: red;">${error.message}</p>`;
-        document.getElementById('loading-message').style.display = 'none';
+        const loadingMessage = document.getElementById('loading-message');
+
+        if (container) {
+            container.insertAdjacentHTML('beforeend', `<p style="text-align: center; color: #b42318;">${escapeHtml(error.message)}</p>`);
+        }
+
+        if (loadingMessage) {
+            loadingMessage.style.display = 'none';
+        }
     }
 }
 
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
-    if (lines.length === 0) return [];
-    const headers = lines[0].split(',').map(h => h.trim());
-    const members = [];
-    for (let i = 1; i < lines.length; i++) {
-        if (lines[i].trim() === '') continue;
-        const values = lines[i].split(',').map(v => v.trim());
-        const member = {};
-        headers.forEach((header, index) => {
-            member[header] = values[index];
-        });
-        members.push(member);
+    if (!lines.length) {
+        return [];
     }
-    return members;
+
+    const headers = lines[0].split(',').map((header) => header.trim());
+
+    return lines.slice(1).filter(Boolean).map((line) => {
+        const values = line.split(',').map((value) => value.trim());
+        const member = {};
+
+        headers.forEach((header, index) => {
+            member[header] = values[index] || '';
+        });
+
+        return member;
+    });
 }
 
 function displayMembers(members) {
     const container = document.getElementById('member-list-container');
-    const groupedMembers = {};
-    members.forEach(member => {
-        if (!groupedMembers[member.grade]) {
-            groupedMembers[member.grade] = [];
+    if (!container) {
+        return;
+    }
+
+    const groupedMembers = members.reduce((groups, member) => {
+        const nextGroups = groups;
+        const grade = member.grade || 'Other';
+
+        if (!nextGroups[grade]) {
+            nextGroups[grade] = [];
         }
-        groupedMembers[member.grade].push(member);
-    });
-    let contentHTML = '<h1 class="page-title">Members</h1>';
-    GRADE_ORDER.forEach(grade => {
-        if (groupedMembers[grade]) {
-            contentHTML += `
-                <div class="member-group">
-                    <h2 class="grade-title">${grade}</h2>
-                    <div class="member-list">
-                        ${groupedMembers[grade].map(member => createMemberCard(member)).join('')}
-                    </div>
-                </div>`;
-        }
-    });
-    container.innerHTML = contentHTML;
+
+        nextGroups[grade].push(member);
+        return nextGroups;
+    }, {});
+
+    const contentHTML = GRADE_ORDER.filter((grade) => groupedMembers[grade]).map((grade) => `
+        <section class="member-group${grade === 'OB' ? ' member-group--ob' : ''}">
+            <h2 class="grade-title">${escapeHtml(grade)}</h2>
+            <div class="${grade === 'OB' ? 'ob-list' : 'member-list'}">
+                ${groupedMembers[grade].map(grade === 'OB' ? createObEntry : createMemberCard).join('')}
+            </div>
+        </section>
+    `).join('');
+
+    container.innerHTML = `<h1 class="page-title">Members</h1>${contentHTML}`;
 }
 
 function createMemberCard(member) {
-    const githubIcon = member.githubUrl ? `<a href="${member.githubUrl}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="/img/github.png" alt="GitHub" class="social-icon"></a>` : '';
-    const xIcon = member.snsUrl ? `<a href="${member.snsUrl}" target="_blank" rel="noopener noreferrer" title="SNS"><img src="${member.snsLogo}" alt="SNS" class="social-icon"></a>` : '';
-    
-    // キーワードをタグとして表示
-    const keywords = member.keywords 
-        ? member.keywords.split(' ').map(keyword => `<span class="keyword-tag">${keyword}</span>`).join('') 
+    const githubIcon = member.githubUrl
+        ? `<a href="${escapeHtml(member.githubUrl)}" target="_blank" rel="noopener noreferrer" title="GitHub"><img src="/img/github.png" alt="GitHub" class="social-icon" loading="lazy"></a>`
         : '';
+
+    const xIcon = member.snsUrl
+        ? `<a href="${escapeHtml(member.snsUrl)}" target="_blank" rel="noopener noreferrer" title="SNS"><img src="${escapeHtml(member.snsLogo)}" alt="SNS" class="social-icon" loading="lazy"></a>`
+        : '';
+
+    const keywords = member.keywords
+        ? member.keywords.split(' ').filter(Boolean).map((keyword) => `<span class="keyword-tag">${escapeHtml(keyword)}</span>`).join('')
+        : '';
+
     return `
-        <div class="member-card">
-            <a href="profile.html?id=${member.id}" class="profile-link">
-                <img src="${member.imageUrl}" alt="${member.name}" class="profile-pic">
+        <article class="member-card">
+            <a href="profile.html?id=${encodeURIComponent(member.id)}" class="profile-link">
+                <img src="${escapeHtml(member.imageUrl)}" alt="${escapeHtml(member.name)}" class="profile-pic" loading="lazy">
             </a>
             <div class="member-info">
                 <h3 class="member-name">
-                    <a href="profile.html?id=${member.id}" class="profile-link">${member.name}</a>
+                    <a href="profile.html?id=${encodeURIComponent(member.id)}" class="profile-link">${escapeHtml(member.name)}</a>
                 </h3>
-                <div class="keywords-container">
-                    ${keywords}
-                </div>
+                <div class="keywords-container">${keywords}</div>
                 <div class="social-icons">
                     ${githubIcon}
                     ${xIcon}
                 </div>
             </div>
-        </div>`;
+        </article>
+    `;
+}
+
+function createObEntry(member) {
+    return `<div class="ob-name">${escapeHtml(member.name)}</div>`;
 }
