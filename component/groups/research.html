@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>研究内容 | iASL</title>
-    <link rel="icon" href="/img/favicon.ico">
+    <link rel="icon" href="../../img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/component/style/research.css">
+    <link rel="stylesheet" href="../style/research.css">
 </head>
 <body class="research-page">
     <div id="background-animation"></div>
@@ -25,8 +25,9 @@
             </li>
         </ul>
     </nav>
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
     
-    <section class="panel b-white" id="0">
+    <section class="panel b-gradation" id="0">
         <article class="panel__wrapper">
             <div class="panel__content">
                 <div class="image_container">
@@ -76,7 +77,12 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
                     </div>
+                </div>
+                
+                <div class ="groups">
+                    <div id="researchs"></div>
                 </div>
             </div>
             
@@ -85,10 +91,15 @@
                 <path class="a2" d="M0 20 L30 52 L60 20"></path>
                 <path class="a3" d="M0 40 L30 72 L60 40"></path>
             </svg>
-        </article>
-    </section>
+            <!--デバッグ用
+            <div class ="groups">
+                <div id="researchs"></div>
+            </div>
+            --->
 
-    <section class="panel b-yellow" id="1">
+        </article>
+
+        <!--デバッグ用
         <article class="panel__wrapper">
             <div class="panel__content b-blue">
                 <h1 class="panel__headline"><i class="fa fa-flask-vial"></i>&nbsp;Research</h1>
@@ -98,7 +109,7 @@
                 </div>
             </div>
         </article>
-
+        -->
     </section>
 
     <div id="modal" class="modal">
@@ -110,7 +121,7 @@
 
     <body>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="/hook/research.js"></script>
+    <script src="../../hook/research.js"></script>
     </body>
     </body> 
 </html>

@@ -498,7 +498,8 @@ ul {
     border-radius: 18px;
 }
 
-.members {
+.members,
+.researches {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -515,7 +516,8 @@ ul {
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.members:hover {
+.members:hover,
+.researches:hover {
     transform: translateY(-2px);
     box-shadow: 0 20px 32px rgba(217, 130, 36, 0.28);
     filter: saturate(1.05);

@@ -1,3 +1,12 @@
+function goBackOrRedirect() {
+    if (document.referrer) {
+        window.history.back();
+        return;
+    }
+
+    window.location.href = '/index.html';
+}
+
 function initResearchPage() {
   const modal = document.getElementById("modal");
   const modalBody = document.getElementById("modal-body");

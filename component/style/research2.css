@@ -296,7 +296,7 @@ ul {
     position: relative;
     z-index: 1;
     min-height: clamp(560px, 88vh, 300px);
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
 }
@@ -342,7 +342,8 @@ ul {
 
 .panel__content.b-white,
 .panel__content.b-yellow,
-.panel__content.b-blue {
+.panel__content.b-blue,
+.panel__content.b-gradation {
     background: var(--surface-strong);
 }
 
@@ -850,6 +851,10 @@ ul {
     background: linear-gradient(180deg, #fff4e8 0%, #ffe2c3 100%);
 }
 
+.b-gradation{
+    background: linear-gradient(#bafff6db, #8bbefffa);
+}
+
 @media (max-width: 1120px) {
     .panel__content__flex {
         grid-template-columns: minmax(0, 1fr);
@@ -861,7 +866,6 @@ ul {
 }
 
 @media (max-width: 768px) {
-
     :root {
         --nav-width: 60px;
         --layout-offset: calc(var(--nav-width) + 24px);

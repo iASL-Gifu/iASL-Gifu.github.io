@@ -27,8 +27,8 @@
             </li>
         </ul>
     </nav>
-    
-    <section class="panel b-white" id="0">
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>    
+    <section class="panel b-gradation" id="0">
         <article class="panel__wrapper">
             <div class="panel__content">
                 <div class="image_container">
@@ -88,20 +88,17 @@
                 <path class="a3" d="M0 40 L30 72 L60 40"></path>
             </svg>
         </article>
-    </section>
-
-    <section class="panel b-yellow" id="1">
+    
 
         <div id="researchs"></div>
-  
-    </section>
 
-    <div id="modal" class="modal">
-        <div class="modal__content">
-            <button class="modal__close">×</button>
-            <div id="modal-body"></div>
+        <div id="modal" class="modal">
+            <div class="modal__content">
+                <button class="modal__close">×</button>
+                <div id="modal-body"></div>
+            </div>
         </div>
-    </div>
+    </section>
 
     <body>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
