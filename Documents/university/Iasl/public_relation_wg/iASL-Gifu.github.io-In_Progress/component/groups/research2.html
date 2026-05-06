@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研究内容 | iASL</title>
+    <link rel="icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/component/style/research2.css">
+</head>
+<body class="research-page">
+    <div id="background-animation"></div>
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
+            <div class="burger__patty"></div>
+        </button>
+        
+        <ul class="nav__list">
+            <li class="nav__item">
+            <a href="#1" class="nav__link c-yellow" aria-label="センシング"><i class="fa fa-wifi" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#2" class="nav__link c-blue" aria-label="環境・シミュレータ"><i class="fa fa-earth-asia" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#3" class="nav__link c-yellow" aria-label="自動運転AI"><i class="fa fa-brain" aria-hidden="true"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>    
+    <section class="panel b-gradation" id="0">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <div class="image_container">
+                    <div class="image_in_text">
+                        <h1><i class="fa fa-car-on"></i><br class="sp_br"><span>&nbsp;</span>研究紹介</h1> 
+                    </div>
+                    <br>
+                    <h1>私たちの研究室ではセンシング、環境・シミュレータ、自動運転AI、身体認知システム、自律航行についての研究をしています(←概要を考える)</h1>
+                </div>
+                <div class="chip_container">
+                    <div class="chip_wrapper">
+                        <div class="chips">
+                            <div class="chip__category">分野</div>
+                            <div class="chip" data-tag="E2E">
+                                <span class="chip__label">E2E</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="DrivingSupport">
+                                <span class="chip__label">運転支援</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="Ship">
+                                <span class="chip__label">自律航行</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="V2X">
+                                <span class="chip__label">V2X</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="chip_wrapper">
+                            <div class="chips">
+                                <div class="chip__category">学年</div>
+                                <div class="chip" data-tag="m2">
+                                    <span class="chip__label">M2</span>
+                                    <span class="chip__knob"></span>
+                                </div>
+                                
+                                <div class="chip" data-tag="m1">
+                                    <span class="chip__label">M1</span>
+                                    <span class="chip__knob"></span>
+                                </div>
+                                <div class="chip" data-tag="b4">
+                                    <span class="chip__label">B4<span>
+                                    <span class="chip__knob"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <svg class="arrows">
+                <path class="a1" d="M0 0 L30 32 L60 0"></path>
+                <path class="a2" d="M0 20 L30 52 L60 20"></path>
+                <path class="a3" d="M0 40 L30 72 L60 40"></path>
+            </svg>
+        </article>
+    
+
+        <div id="researchs"></div>
+
+        <div id="modal" class="modal">
+            <div class="modal__content">
+                <button class="modal__close">×</button>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+    </section>
+
+    <body>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script src="/hook/research2.js"></script>
+    </body>
+</html>

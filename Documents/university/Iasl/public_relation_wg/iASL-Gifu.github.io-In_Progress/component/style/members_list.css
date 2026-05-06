@@ -1,0 +1,206 @@
+body.members-list-page {
+    background:
+        radial-gradient(circle at top right, rgba(95, 199, 234, 0.22), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(230, 208, 104, 0.18), transparent 36%),
+        linear-gradient(180deg, #f7fbff 0%, #edf3f8 100%);
+}
+
+.container {
+    width: min(1200px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 96px;
+    position: relative;
+    z-index: 1;
+}
+
+.page-title {
+    margin: 0 0 28px;
+    text-align: center;
+    color: var(--text-strong);
+    font-size: clamp(2.4rem, 1.7rem + 2vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.loading-message {
+    margin: 0;
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 1rem;
+}
+
+.member-group {
+    margin-bottom: 28px;
+    padding: 28px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(18px);
+}
+
+.member-group--ob {
+    padding-bottom: 22px;
+}
+
+.grade-title {
+    margin: 0 0 20px;
+    padding-bottom: 14px;
+    color: var(--text-strong);
+    font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem);
+    border-bottom: 3px solid rgba(13, 95, 133, 0.18);
+}
+
+.member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.ob-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.ob-name {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(95, 199, 234, 0.12);
+    border: 1px solid rgba(95, 199, 234, 0.2);
+    color: var(--text-strong);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.member-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding: 22px 18px 18px;
+    border-radius: 24px;
+    background: rgba(248, 250, 252, 0.92);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(95, 199, 234, 0.38);
+    box-shadow: 0 22px 42px rgba(15, 23, 42, 0.1);
+}
+
+a.profile-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-pic {
+    width: 144px;
+    height: 144px;
+    margin-bottom: 16px;
+    border: 5px solid rgba(230, 208, 104, 0.68);
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.1);
+}
+
+.member-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.member-name {
+    margin: 0;
+    min-height: 3.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-strong);
+    font-size: 1.22rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.keywords-container {
+    min-height: 48px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.keyword-tag {
+    display: inline-block;
+    margin: 4px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(95, 199, 234, 0.16);
+    color: var(--accent-strong);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    min-height: 32px;
+    padding-top: 4px;
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.08);
+    filter: saturate(1.1);
+}
+
+@media (max-width: 640px) {
+    .container {
+        width: min(100% - 20px, 1200px);
+        padding: 36px 0 84px;
+    }
+
+    .member-group {
+        padding: 20px 16px;
+        border-radius: 24px;
+    }
+
+    .member-list {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+    }
+
+    .ob-list {
+        gap: 10px;
+    }
+
+    .ob-name {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .profile-pic {
+        width: 118px;
+        height: 118px;
+    }
+
+    .member-name {
+        min-height: auto;
+        font-size: 1.05rem;
+    }
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iASL - アレックス研究室</title>
+    <link rel="icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-page">
+    <div id="background-animation"></div>
+    <nav class="nav" aria-label="セクションナビゲーション">
+        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
+            <div class="burger__patty"></div>
+        </button>
+        
+        <ul class="nav__list">
+            <li class="nav__item">
+            <a href="#1" class="nav__link c-yellow" aria-label="News"><i class="fa fa-newspaper" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#2" class="nav__link c-blue" aria-label="About"><i class="fa fa-car" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#3" class="nav__link c-yellow" aria-label="Message"><i class="fa fa-graduation-cap" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#4" class="nav__link c-blue" aria-label="Research"><i class="fa fa-flask-vial" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#5" class="nav__link c-yellow" aria-label="Members"><i class="fa fa-person" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#6" class="nav__link c-blue" aria-label="Access・Contact"><i class="fa fa-map-location-dot" aria-hidden="true"></i></a>
+            </li>
+        </ul>
+    </nav>
+    
+    <section class="panel b-white" id="0">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <div class="cover_logo">
+                    <img src="img/logo.png" alt="iASL">
+                    <p class="cover_logo__title">
+                        <span>Intelligent Autonomous</span>
+                        <span>Systems Laboratory</span>
+                    </p>
+                </div>
+            </div>
+            <svg class="arrows">
+                <path class="a1" d="M0 0 L30 32 L60 0"></path>
+                <path class="a2" d="M0 20 L30 52 L60 20"></path>
+                <path class="a3" d="M0 40 L30 72 L60 40"></path>
+            </svg>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="1">
+        <article class="panel__wrapper">
+            <div class="panel__content b-yellow">
+                <h1 class="panel__headline"><i class="fa fa-newspaper"></i>&nbsp;News</h1>
+                <div class="panel__block"></div>
+                <div id="news-container">読み込み中...</div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-blue" id="2">
+        <article class="panel__wrapper">
+            <div class="panel__content b-blue">
+                <h1 class="panel__headline"><i class="fa fa-car"></i>&nbsp;About</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p>アレックス研究室は、2022年11月に岐阜大学工学部 電気電子・情報工学科（情報コース）に設立されました。</p>
+                        <p>自動運転ソフトウェア「Autoware」を活用した実験をはじめ、AIによる自動船舶や自律ロボットの研究を行っています。また、人間社会との関わり（ヒューマンインターフェース）の調査や、デジタルツインの検証環境構築、高度なセンシング技術の開発にも取り組んでいます。</p>
+                        <p>研究室の目標は、AIとロボティクスを活用して、より安全で効率的な自律システムを社会に実現することです。私たちは、最新の技術を学びながら、実践的なプロジェクトに取り組んでいます。</p>
+                    </div>
+                    <div class="panel__content__right">
+                        <img src="img/about.png" alt="" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="3">
+        <article class="panel__wrapper">
+            <div class="panel__content b-yellow">
+                <h1 class="panel__headline"><i class="fa fa-graduation-cap"></i>&nbsp;Message</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <img src="img/profile/alex2.png" sizes="(max-width: 480px) 80vw, 480px" alt="カルバヨ アレックサンダー 准教授" loading="lazy">
+                    </div>
+                    <div class="panel__content__right">
+                        <p>みなさん，こんにちは．私は岐阜大学 准教授のカルバヨ アレックサンダーです。私は筑波大学知能ロボット研究所にて工学博士号を取得し, その後,北陽電機株式会社にてLiDARの研究開発に従事しました。</p>
+                        <p>そして現在,私は知能ロボットのセンシングや自律運転，それに関連する課題について取り組んでいます。こうした課題を取り組む中で、福祉課題などの地域問題解決にも貢献したいと考えています。</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        
+
+    </section>
+    <section class="panel b-blue" id="4">
+        <article class="panel__wrapper">
+            <div class="panel__content b-blue">
+                <h1 class="panel__headline"><i class="fa fa-flask-vial"></i>&nbsp;Research</h1>
+                <div class="panel__block"></div>
+                    <div class="panel__content__flex">
+                        <div class="panel__content__right">
+                            <img src="img/group11.png" alt="" loading="lazy">
+                        </div>
+                        <div class="panel__content__right">
+                            <p>説明
+                        </div>
+                    </div>
+                    <a class="researches" href="component/groups/research.html">(modal)</a>
+                    <a class="researches" href="component/groups/research2.html">(list)</a>
+                    
+                 </div>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="5">
+        <article class="panel__wrapper">
+            <div class="panel__content b-yellow">
+                <h1 class="panel__headline"><i class="fa-solid fa-person"></i> &nbsp;Members</h1>
+                <div class="panel__block"></div>
+                    <div class="panel__content__flex">
+                        <div class="panel__content__right">
+                            <img src="img/3aniversary.jpg" alt="" loading="lazy">
+                        </div>
+                        <div class="panel__content__right">
+                            <p>研究室には、博士課程2名(D1: )、修士課程10名(M2: 4名, M1: 6名)、学部生5名(B4: 5名)、研究生1名の計18名が在籍しており、日々交流しながら研究に取り組んでいます。</p>
+                            <p>研究室主催のイベントも多く学年の垣根を越えた交流が自然に生まれるのが魅力です。</p>
+                        </div>
+                    </div>
+                    <a class="members" href="component/members_list.html">More</a>
+            </div>
+        </article>
+    </section>
+    <section class="panel b-blue" id="6">
+        <article class="panel__wrapper">
+            <div class="panel__content b-blue">
+                <h1 class="panel__headline"><i class="fa fa-map-location-dot"></i>&nbsp;Access・Contact</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p>〒501-1193 岐阜市柳戸1-1</p>
+                        <p>岐阜大学 工学部 C棟 7階 C730</p>
+                        <p><a href="https://forms.gle/mXsiYRQUnkB7qAAz5">お問い合わせ</a></p>
+                    </div>
+                    <div class="panel__content__right">
+                        <iframe class="map" title="岐阜大学へのアクセスマップ" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5278.983107360637!2d136.734353089158!3d35.464818784851104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6003ac859a55f3ab%3A0xf89f8d58b5a1ab9e!2z5bKQ6Zic5aSn5a2m!5e0!3m2!1sja!2sjp!4v1740554392777!5m2!1sja!2sjp" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <a href="#0" class="tire" aria-label="ページ先頭へ戻る"><div class="scroll_indicator"></div></a>
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <button id="popup-close" class="popup-close" type="button" aria-label="画像を閉じる">&times;</button>
+            <img id="popup-image" src="" alt="ポップアップ画像">
+        </div>
+    </div>
+
+    <div id="article-popup" class="popup-overlay">
+        <div class="article-popup-content">
+            <button id="article-popup-close" class="popup-close" type="button" aria-label="記事を閉じる">&times;</button>
+            <div id="article-content"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>

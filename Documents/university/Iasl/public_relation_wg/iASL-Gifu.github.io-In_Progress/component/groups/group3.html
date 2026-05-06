@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自律システム | iASL</title>
+    <link rel="icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="research-page">
+    <div id="background-animation"></div>
+    <nav class="nav" aria-label="ページ内ナビゲーション">
+        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
+            <div class="burger__patty"></div>
+        </button>
+        
+        <ul class="nav__list">
+            <li class="nav__item">
+            <a href="#1" class="nav__link c-yellow" aria-label="自律航行"><i class="fa fa-ship" aria-hidden="true"></i></a>
+            </li>
+            <!-- <li class="nav__item">
+            <a href="#2" class="nav__link c-blue"><i class="fa fa-earth-asia"></i></a>
+            </li>
+            <li class="nav__item">
+            <a href="#3" class="nav__link c-yellow"><i class="fa fa-brain"></i></a>
+            </li> -->
+        </ul>
+    </nav>
+
+    <section class="panel b-white" id="0">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <div class="image_container">
+                    <div class="image_in_text">
+                        <h1><i class="fa fa-robot"></i><br class="sp_br"><span>&nbsp;</span>自律システム</h1>
+                    </div>
+                </div>
+            </div>
+            <svg class="arrows">
+                <path class="a1" d="M0 0 L30 32 L60 0"></path>
+                <path class="a2" d="M0 20 L30 52 L60 20"></path>
+                <path class="a3" d="M0 40 L30 72 L60 40"></path>
+            </svg>
+        </article>
+    </section>
+    <section class="panel b-yellow" id="1">
+        <article class="panel__wrapper">
+            <div class="panel__content b-yellow">
+                <h1 class="panel__headline"><i class="fa fa-ship"></i>&nbsp;<br class="sp_br">自律航行</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <img src="/img/research/calypso.jpg" alt="" loading="lazy">
+                    </div>
+                    <div class="panel__content__right">
+                        <p>近年、水難事故は増加傾向にあり、水難救助の重要性が増しています。しかし、既存の水難救助には限界があり、人力では条件が厳しいといった問題があります。そこで、人力でなく自律小型船を用いた水難探索救助に着目しました。</p>
+                        <p>自律小型船での水難探索では、探索精度、航行制御に関して課題が多くあるため、それらの解決を目標に研究を進めています。</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <!-- <section class="panel b-blue" id="2">
+        <article class="panel__wrapper">
+            <div class="panel__content">
+                <h1 class="panel__headline"><i class="fa fa-jet-fighter"></i>&nbsp;<br class="sp_br">自律飛行</h1>
+                <div class="panel__block"></div>
+                <div class="panel__content__flex">
+                    <div class="panel__content__left">
+                        <p></p>
+                    </div>
+                    <div class="panel__content__right">
+                        <img src="/img/research/drone.png">
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section> -->
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
+    <a href="#0" class="tire" aria-label="ページ先頭へ戻る"><div class="scroll_indicator"></div></a>
+    <div id="popup" class="popup-overlay">
+        <div class="popup-content">
+            <button id="popup-close" class="popup-close" type="button" aria-label="画像を閉じる">&times;</button>
+            <img id="popup-image" src="" alt="ポップアップ画像">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>
