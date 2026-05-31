@@ -7,21 +7,35 @@ function goBackOrRedirect() {
     window.location.href = '/index.html';
 }
 
-function initResearchPage() {
+async function loadResearchList() {
+  const response = await fetch(
+    "../research/research.csv"
+  );
+
+  const csv = await response.text();
+
+  const rows = csv.trim().split("\n");
+  const headers = rows[0].split(",");
+
+  return rows.slice(1).map(row => {
+    const values = row.split(",");
+
+    return headers.reduce((obj, key, index) => {
+      obj[key.trim()] = values[index]?.trim() || "";
+      return obj;
+    }, {});
+  });
+}
+
+async function initResearchPage() {
   const modal = document.getElementById("modal");
   const modalBody = document.getElementById("modal-body");
   const container = document.getElementById("researchs");
 
   if (!container) return;
-
-  const researchFiles = [
-    "/component/researchs/karin.md",
-    "/component/researchs/arata.md",
-    "/component/researchs/masako.md",
-    "/component/researchs/hayato.md",
-    "/component/researchs/soma.md"    
-  ];
-
+  
+  const researchData = await loadResearchList();
+  
   const chips = document.querySelectorAll(".chip");
 
   let selectedTags = new Set();
@@ -30,6 +44,7 @@ function initResearchPage() {
 
   chips.forEach(chip => {
     chip.addEventListener("click", () => {
+
       const tag = chip.dataset.tag;
       const type = chip.closest(".chips").dataset.type;
 
@@ -52,10 +67,13 @@ function initResearchPage() {
       el.classList.add("active");
     }
   }
+  const validResearchData = researchData.filter(
+    item => item.mdPath?.trim()
+  );
   
   Promise.all(
-    researchFiles.map(file =>
-      fetch(file).then(res => res.text())
+    validResearchData.map(item =>
+      fetch(item.mdPath).then(res => res.text())
     )
   ).then(texts => {
     container.innerHTML = "";
@@ -71,17 +89,21 @@ function initResearchPage() {
       section.dataset.summary = summary;
       section.dataset.detail = detail;
       section.dataset.title = meta.title;
-      section.dataset.image = meta.image;
-
+      section.dataset.image_for_lists = meta.image_for_list;
+      section.dataset.image_for_detail_1 = meta.image_for_detail_1 || "";
+      section.dataset.image_for_detail_2 = meta.image_for_detail_2 || "";
+      section.dataset.image_for_detail_3 = meta.image_for_detail_3 || "";
+      section.dataset.image_for_detail_4 = meta.image_for_detail_4 || "";
       section.innerHTML = `
         <div class="group1">
           <div class="research__headline_containner">
-            <h2 class="panel__headline">
+            <div class="panel__headline">
               ${meta.title || "テーマ未入力"}
-            </h2>
+            </div>
             <div class="panel__block"></div>
           </div>
           <img src="${meta.image_for_lists || '/img/research/calypso.jpg'}">
+          <div class="panel__summery">${section.dataset.summary || "summery未入力"}</div>
         </div>
       `;
 
@@ -109,9 +131,12 @@ function initResearchPage() {
       const section = wrapper.parentElement;
 
       modalBody.innerHTML = `
-        <h2>${section.dataset.title}</h2>
-        <img src="${section.dataset.image}">
-        <div>${marked.parse(section.dataset.detail)}</div>
+        <h1>${section.dataset.title}</h1>
+        <img src="${section.dataset.image_for_detail_1}">
+        <img src="${section.dataset.image_for_detail_2}">
+        <img src="${section.dataset.image_for_detail_3}">
+        <img src="${section.dataset.image_for_detail_4}">
+        <div class="modal__text">${marked.parse(section.dataset.detail)}</div>
       `;
 
       modal.classList.add("active");

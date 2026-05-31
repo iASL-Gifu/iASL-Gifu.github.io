@@ -989,6 +989,7 @@ ul {
     background: linear-gradient(180deg, #fff4e8 0%, #ffe2c3 100%);
 }
 
+
 @media (max-width: 1120px) {
     .panel__content__flex {
         grid-template-columns: minmax(0, 1fr);

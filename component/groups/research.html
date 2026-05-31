@@ -10,21 +10,7 @@
 </head>
 <body class="research-page">
     <div id="background-animation"></div>
-    <nav class="nav" aria-label="ページ内ナビゲーション">
-        <button class="burger" type="button" aria-label="ナビゲーションを開閉" aria-expanded="false">
-            <div class="burger__patty"></div>
-        </button>
 
-        <ul class="nav__list">
-
-            <li class="nav__item">
-            <a href="#2" class="nav__link c-blue" aria-label="research2"><i class="fa fa-earth-asia" aria-hidden="true"></i></a>
-            </li>
-            <li class="nav__item">
-            <a href="#3" class="nav__link c-yellow" aria-label="research3"><i class="fa fa-brain" aria-hidden="true"></i></a>
-            </li>
-        </ul>
-    </nav>
     <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
     
     <section class="panel b-gradation" id="0">
@@ -57,6 +43,22 @@
                                 <span class="chip__label">V2X</span>
                                 <span class="chip__knob"></span>
                             </div>
+                            <div class="chip" data-tag="Sensing">
+                                <span class="chip__label">センシング</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="LanguageModel">
+                                <span class="chip__label">言語モデル</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="DigitalTwin">
+                                <span class="chip__label">デジタルツイン</span>
+                                <span class="chip__knob"></span>
+                            </div>
+                            <div class="chip" data-tag="perception">
+                                <span class="chip__label">認識技術</span>
+                                <span class="chip__knob"></span>
+                            </div>
                         </div>
                         <br>
                         <div class="chip_wrapper">
@@ -80,10 +82,11 @@
                         <br>
                     </div>
                 </div>
-                
+
                 <div class ="groups">
                     <div id="researchs"></div>
                 </div>
+        
             </div>
             
             <svg class="arrows">
