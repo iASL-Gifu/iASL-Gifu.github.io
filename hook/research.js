@@ -76,52 +76,73 @@ async function initResearchPage() {
       fetch(item.mdPath).then(res => res.text())
     )
   ).then(texts => {
+    const allTags = new Set();
     container.innerHTML = "";
 
-    texts.forEach(md => {
-      const { meta, content } = parseMarkdown(md);
-      const { summary, detail } = splitContent(content);
+    texts.forEach((content, index) => {
+      const item = validResearchData[index];
+
+      if (!item.title || !item.title.trim()) return;
+
+      const tags = (item.tags || "")
+          .split(/\s+/)
+          .filter(Boolean);
+
+      tags.forEach(tag => allTags.add(tag));
 
       const section = document.createElement("section");
 
-      section.dataset.tags = meta.tags || "";
-      section.dataset.grade = meta.grade || "";
-      section.dataset.summary = summary;
-      section.dataset.detail = detail;
-      section.dataset.title = meta.title;
-      section.dataset.image_for_lists = meta.image_for_list;
-      section.dataset.image_for_detail_1 = meta.image_for_detail_1 || "";
-      section.dataset.image_for_detail_2 = meta.image_for_detail_2 || "";
-      section.dataset.image_for_detail_3 = meta.image_for_detail_3 || "";
-      section.dataset.image_for_detail_4 = meta.image_for_detail_4 || "";
+      section.dataset.tags = item.tags || "";
+      section.dataset.grade = item.grade || "";
+      section.dataset.title = item.title || "";
+      section.dataset.content = content;
+      section.dataset.image_for_title = item.image_for_title || "";
+
       section.innerHTML = `
         <div class="group1">
           <div class="research__headline_containner">
             <div class="panel__headline">
-              ${meta.title || "テーマ未入力"}
+              ${item.title || "テーマ未入力"}
             </div>
             <div class="panel__block"></div>
           </div>
-          <img src="${meta.image_for_lists || '/img/research/calypso.jpg'}">
-          <div class="panel__summery">${section.dataset.summary || "summery未入力"}</div>
+          <img src="${item.image_for_title || '/img/research/calypso.jpg'}">
         </div>
       `;
-
       container.appendChild(section);
       allItems.push(section);
     });
+
+    const tagContainer =
+      document.querySelector('.chips[data-type="tag"]');
+    if (!tagContainer) return;
+
+    tagContainer.querySelectorAll(".chip")
+      .forEach(el => el.remove());
+
+    [...allTags]
+      .sort()
+      .forEach(tag => {
+
+        const chip = document.createElement("div");
+
+        chip.className = "chip";
+        chip.dataset.tag = tag;
+
+        chip.innerHTML = `
+          <span class="chip__label">${tag}</span>
+          <span class="chip__knob"></span>
+        `;
+
+        tagContainer.appendChild(chip);
+
+        chip.addEventListener("click", () => {
+          toggle(selectedTags, tag, chip);
+          filterItems();
+        });
+      });
+    
   });
-
-
-  function splitContent(content) {
-    const [_, summary = "", detail = ""] =
-      content.split(/## summary|## detail/);
-
-    return {
-      summary: summary.trim(),
-      detail: detail.trim()
-    };
-  }
 
   if (!container.dataset.bound) {
     container.addEventListener("click", (e) => {
@@ -130,14 +151,8 @@ async function initResearchPage() {
 
       const section = wrapper.parentElement;
 
-      modalBody.innerHTML = `
-        <h1>${section.dataset.title}</h1>
-        <img src="${section.dataset.image_for_detail_1}">
-        <img src="${section.dataset.image_for_detail_2}">
-        <img src="${section.dataset.image_for_detail_3}">
-        <img src="${section.dataset.image_for_detail_4}">
-        <div class="modal__text">${marked.parse(section.dataset.detail)}</div>
-      `;
+      modalBody.innerHTML =
+        marked.parse(section.dataset.content);
 
       modal.classList.add("active");
     });
@@ -164,45 +179,28 @@ async function initResearchPage() {
 
   function filterItems() {
     allItems.forEach(item => {
-      const tags = (item.dataset.tags || "").split(" ");
+
+      const tags = (item.dataset.tags || "")
+        .split(/\s+/)
+        .filter(Boolean);
+      
       const grade = item.dataset.grade || "";
 
+      const lowerTags = tags.map(t => t.toLowerCase());
       const tagMatch =
         selectedTags.size === 0 ||
-        [...selectedTags].every(t => tags.includes(t));
+        [...selectedTags].every(t => lowerTags.includes(t.toLowerCase()));
 
       const gradeMatch =
         selectedGrades.size === 0 ||
-        selectedGrades.has(grade);
+        [...selectedGrades].some(g => g.toLowerCase() === grade.toLowerCase());
 
       item.style.display = (tagMatch && gradeMatch) ? "block" : "none";
     });
   }
 
   document.querySelectorAll(".panel__content")
-  .forEach(el => el.classList.add("panel__content--active"));
-}
-
-function parseMarkdown(md) {
-const match = md.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
-
-  if (!match) {
-    return { meta: {}, content: md };
-  }
-
-  const metaLines = match[1].split(/\r?\n/);
-  const meta = {};
-
-  metaLines.forEach(line => {
-    const [key, ...rest] = line.split(':');
-    if (!key) return;
-    meta[key.trim()] = rest.join(':').trim();
-  });
-
-  return {
-    meta,
-    content: match[2]
-  };
+    .forEach(el => el.classList.add("panel__content--active"));
 }
 
 document.addEventListener("DOMContentLoaded", initResearchPage);

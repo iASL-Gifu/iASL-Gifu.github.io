@@ -1,20 +1,20 @@
-id,name,grade,keywords,mdPath,githubUrl,snsUrl,snsLogo
-demo,Demo,M2,,../research/demo.md,,,
-arata,Arata Tanaka,M2,,../research/arata.md,,,
-karin,Karin Taguchi,M2,,../research/karin.md,,,
-hayato,Hayashi Hayato,M2,,../research/hayato.md,,,
-masako,Yoshimasa Hamada,M2,,../research/masako.md,,,
-dai,Dai Hasegawa,M1,,../research/dai.md,,,
-hideki,Hideki Sugihara,M1,,../research/hide.md,,,
-kei,Keitaro Takakura,M1,,../research/ktr.md,,,
-mana,Mana Yamauchi,M1,,../research/mana.md,,,
-saku,Shotaro Nakamura,M1,V2X Security,../research/saku.md,,,
-soma,Soma Ito,M1,Autonomous Surface Vehicle,../research/soma.md,,,
-hira,Hira Akash,D1,,,,,
-tadamasa,Tadamasa,B4,,,,,
-ruri,Ruri,B4,,,,,
-reina,Reina,B4,,,,,
-shunsuke,Shunsuke,B4,,,,,
-haruki,Haruki,B4,,,,,
-james,James Njaji,D1,,,,,,
-Sitana,HA Sitana,Research Student,,,,,,
+id,name,grade,title,tags,image_for_title,mdPath
+demo,Demo,M2,デバッグ用,センシング E2E 運転支援 自律航行 V2X デジタルツイン,/img/category/communication.jpeg,../research/demo.md
+arata,Arata Tanaka,M2,デモ１,,,../research/arata_research.md
+karin,Karin Taguchi,M2,,,,../research/karin_research.md
+hayato,Hayashi Hayato,M2,,,,../research/hayato_research.md
+masako,Yoshimasa Hamada,M2,,,,../research/masako_research.md
+dai,Dai Hasegawa,M1,,,,../research/dai_research.md
+hideki,Hideki Sugihara,M1,,,,../research/hide_research.md
+kei,Keitaro Takakura,M1,,,,../research/ktr_research.md
+mana,Mana Yamauchi,M2,,,,../research/mana_research.md
+saku,Shotaro Nakamura,M2,,,,../research/saku_research.md
+soma,Soma Ito,M2,,,,../research/soma_research.md
+hira,Hira Akash,D1,,,,
+tadamasa,Tadamasa,B4,,,,
+ruri,Ruri,B4,,,,
+reina,Reina,B4,,,,
+shunsuke,Shunsuke,B4,,,,
+haruki,Haruki,B4,,,,
+james,James Njaji,D1,,,,
+Sitana,HA Sitana,Research Student,,,,

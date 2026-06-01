@@ -80,8 +80,8 @@ button {
 }
 
 button.active {
-  background-color: #333;
-  color: white;
+    background-color: #333;
+    color: white;
 }
 
 a {
@@ -101,11 +101,11 @@ button:focus-visible {
 }
 
 button:hover {
-  background: #ddd;
+    background: #ddd;
 }
 
 button.active:hover {
-  background: #555;
+    background: #555;
 }
 
 ul {
@@ -171,7 +171,7 @@ ul {
 .burger:hover {
     transform: translateY(-5px);
     background: rgba(15, 23, 42, 0.96);
-    
+
 }
 
 .burger__patty {
@@ -309,10 +309,7 @@ ul {
     width: min(100%, var(--content-max-width));
     margin: 0 auto;
     padding:
-        clamp(40px, 2vh, 112px)
-        clamp(24px, 5vw, 72px)
-        clamp(25px, 2vh, 88px)
-        calc(var(--layout-offset) + clamp(0px, 1vw, 18px));
+        clamp(40px, 2vh, 112px) clamp(24px, 5vw, 72px) clamp(25px, 2vh, 88px) calc(var(--layout-offset) + clamp(0px, 1vw, 18px));
 }
 
 .panel__content {
@@ -505,7 +502,7 @@ ul {
 
 .group1:hover .change_color,
 .group2:hover .change_color,
-.group3:hover .change_color{
+.group3:hover .change_color {
     color: #007bff;
 }
 
@@ -523,13 +520,13 @@ ul {
     aspect-ratio: 6/ 4;
     object-fit: cover;
     border-radius: 18px;
-    
+
 }
 
 .researchContainer1 img,
 .researchContainer2 img,
 .researchContainer3 img {
-    transform: scale(0.90);   
+    transform: scale(0.90);
 }
 
 
@@ -851,7 +848,7 @@ ul {
     background: linear-gradient(180deg, #fff4e8 0%, #ffe2c3 100%);
 }
 
-.b-gradation{
+.b-gradation {
     background: linear-gradient(#bafff6db, #8bbefffa);
 }
 
@@ -882,10 +879,7 @@ ul {
 
     .panel__wrapper {
         padding:
-            clamp(64px, 9vh, 88px)
-            clamp(18px, 4vw, 28px)
-            clamp(40px, 7vh, 64px)
-            calc(var(--layout-offset) + 6px);
+            clamp(64px, 9vh, 88px) clamp(18px, 4vw, 28px) clamp(40px, 7vh, 64px) calc(var(--layout-offset) + 6px);
     }
 
     .groups {
@@ -927,10 +921,7 @@ ul {
 
     .panel__wrapper {
         padding:
-            72px
-            16px
-            32px
-            calc(var(--layout-offset) + 2px);
+            72px 16px 32px calc(var(--layout-offset) + 2px);
     }
 
     .panel__content {
@@ -995,87 +986,87 @@ ul {
     }
 }
 
-.chip__category{
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 0;
+.chip__category {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .chip {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 40px;
-  margin: 8px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #eee;
-  cursor: pointer;
-  transition: background 0.3s;
-  padding-right: 36px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    margin: 8px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #eee;
+    cursor: pointer;
+    transition: background 0.3s;
+    padding-left: 36px;
 }
 
 .chip__label {
-  transition: all 0.3s;
-  color: var(--text-strong);
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: -0.05em;
+    transition: all 0.3s;
+    color: var(--text-strong);
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: -0.05em;
 }
 
 .chip__knob {
-  position: absolute;
-  top: 50%;
-  right: 6px;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #999;
-  transition: all 0.3s;
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #999;
+    transition: all 0.3s;
 }
 
 .chip.active {
-  background: #f3e8ff;
-  padding-left: 36px;
-  padding-right: 12px;
+    background: #f3e8ff;
+    padding-left: 12px;
+    padding-right: 36px;
 }
 
 .chip.active .chip__knob {
-  left: 6px;
-  right: auto;
-  background: #8b5cf6;
+    right: 6px;
+    left: auto;
+    background: #8b5cf6;
 }
 
 .chip.active .chip__label {
-  margin-left: 8px;
+    margin-right: 8px;
 }
 
 .chip:not(.active) .chip__label {
-  margin-right: 8px;
+    margin-left: 8px;
 }
 
 .chip_container {
-  display: flex;
-  justify-content: center;
-  margin: 0;
+    display: flex;
+    justify-content: center;
+    margin: 0;
 }
 
-.chip_wrapper{
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-start;
+.chip_wrapper {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
 }
 
 .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
 }
 
 .modal.img {
@@ -1085,21 +1076,21 @@ ul {
 }
 
 .modal.active {
-  display: flex;
+    display: flex;
 }
 
 .modal__content {
-  width: min(800px, 90%);
-  max-height: 80vh;
-  overflow: auto;
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  position: relative;
+    width: min(800px, 90%);
+    max-height: 80vh;
+    overflow: auto;
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
 }
 
 .modal__close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }

@@ -152,13 +152,14 @@ async function initResearchPage() {
       const tags = (item.dataset.tags || "").split(" ");
       const grade = item.dataset.grade || "";
 
+      const lowerTags = tags.map(t => t.toLowerCase());
       const tagMatch =
         selectedTags.size === 0 ||
-        [...selectedTags].every(t => tags.includes(t));
+        [...selectedTags].every(t => lowerTags.includes(t.toLowerCase()));
 
       const gradeMatch =
         selectedGrades.size === 0 ||
-        selectedGrades.has(grade);
+        [...selectedGrades].some(g => g.toLowerCase() === grade.toLowerCase());
 
       item.style.display = (tagMatch && gradeMatch) ? "block" : "none";
     });

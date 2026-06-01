@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,73 +9,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../style/research.css">
 </head>
+
 <body class="research-page">
     <div id="background-animation"></div>
 
-    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i class="fa fa-circle-left" aria-hidden="true"></i></button>
-    
+    <button class="logo logo-button" type="button" onclick="goBackOrRedirect()" aria-label="戻る"><i
+            class="fa fa-circle-left" aria-hidden="true"></i></button>
+
     <section class="panel b-gradation" id="0">
         <article class="panel__wrapper">
             <div class="panel__content">
                 <div class="image_container">
                     <div class="image_in_text">
-                        <h1><i class="fa fa-car-on"></i><br class="sp_br"><span>&nbsp;</span>研究紹介</h1> 
+                        <h1><i class="fa fa-car-on"></i><br class="sp_br"><span>&nbsp;</span>研究紹介</h1>
                     </div>
                     <br>
-                    <h2>私たちの研究室ではセンシング、環境・シミュレータ、自動運転AI、身体認知システム、自律航行についての研究をしています(←概要を考える)</h2>
+                    <h2>
+                        アレックス研究室では自動運転や自律航行などのモビリティ技術を中心に、それらを支える情報基盤の研究を行っています。
+                        AIや通信、シミュレーション技術を融合し、誰もが安心・快適に移動できるスマート社会への貢献を目指しています。
+                    </h2>
                 </div>
                 <div class="chip_container">
                     <div class="chip_wrapper">
                         <div class="chips" data-type="tag">
-                            <div class="chip__category">分野</div>
-                            <div class="chip" data-tag="E2E">
-                                <span class="chip__label">E2E</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="DrivingSupport">
-                                <span class="chip__label">運転支援</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="Ship">
-                                <span class="chip__label">自律航行</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="V2X">
-                                <span class="chip__label">V2X</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="Sensing">
-                                <span class="chip__label">センシング</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="LanguageModel">
-                                <span class="chip__label">言語モデル</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="DigitalTwin">
-                                <span class="chip__label">デジタルツイン</span>
-                                <span class="chip__knob"></span>
-                            </div>
-                            <div class="chip" data-tag="perception">
-                                <span class="chip__label">認識技術</span>
-                                <span class="chip__knob"></span>
-                            </div>
+                            <div class="chip__category">キーワード</div>
                         </div>
                         <br>
                         <div class="chip_wrapper">
                             <div class="chips" data-type="grade">
                                 <div class="chip__category">学年</div>
-                                <div class="chip" data-tag="m2">
+                                <div class="chip" data-tag="D2">
+                                    <span class="chip__label">D2</span>
+                                    <span class="chip__knob"></span>
+                                </div>
+                                <div class="chip" data-tag="D1">
+                                    <span class="chip__label">D1</span>
+                                    <span class="chip__knob"></span>
+                                </div>
+                                <div class="chip" data-tag="M2">
                                     <span class="chip__label">M2</span>
                                     <span class="chip__knob"></span>
                                 </div>
-                                
-                                <div class="chip" data-tag="m1">
+
+                                <div class="chip" data-tag="M1">
                                     <span class="chip__label">M1</span>
                                     <span class="chip__knob"></span>
                                 </div>
-                                <div class="chip" data-tag="b4">
-                                    <span class="chip__label">B4<span>
+                                <div class="chip" data-tag="B4">
+                                    <span class="chip__label">B4</span>
                                     <span class="chip__knob"></span>
                                 </div>
                             </div>
@@ -83,12 +65,12 @@
                     </div>
                 </div>
 
-                <div class ="groups">
+                <div class="groups">
                     <div id="researchs"></div>
                 </div>
-        
+
             </div>
-            
+
             <svg class="arrows">
                 <path class="a1" d="M0 0 L30 32 L60 0"></path>
                 <path class="a2" d="M0 20 L30 52 L60 20"></path>
@@ -123,8 +105,9 @@
     </div>
 
     <body>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="../../hook/research.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="../../hook/research.js"></script>
     </body>
-    </body> 
+</body>
+
 </html>
