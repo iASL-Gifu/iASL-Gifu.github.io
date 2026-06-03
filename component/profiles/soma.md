@@ -15,9 +15,6 @@
 - 引き波を自動で避けるASV
 
 ## 研究紹介
-<div class="slide-container">
-<iframe src="ここにGoogleスライドの埋め込みURLを貼り付け" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-</div>
 
 ## 趣味
 - ゲームを遊んだり　作ったり
