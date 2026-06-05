@@ -1,6 +1,6 @@
 id,name,grade,title,tags,image_for_title,mdPath
 demo,Demo,M2,デバッグ用,センシング E2E 運転支援 自律航行 V2X デジタルツイン,/img/category/communication.jpeg,../research/demo.md
-arata,Arata Tanaka,M2,デモ１,,,../research/arata_research.md
+arata,Arata Tanaka,M2,,,,../research/arata_research.md
 karin,Karin Taguchi,M2,,,,../research/karin_research.md
 hayato,Hayashi Hayato,M2,,,,../research/hayato_research.md
 masako,Yoshimasa Hamada,M2,,,,../research/masako_research.md
