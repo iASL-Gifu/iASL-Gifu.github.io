@@ -1,5 +1,5 @@
 const MEMBER_DATA_URL = '/component/profiles/members.csv';
-const GRADE_ORDER = ['Boss', 'PD', 'D3', 'D2', 'D1', 'M2', 'M1', 'B4', 'B3', 'Research Student', 'OB'];
+const GRADE_ORDER = ['Boss', 'PD', 'D3', 'D2', 'D1', 'M2', 'M1', 'B4', 'B3', 'Research Student', 'Visitor Researcher', 'OB'];
 
 function escapeHtml(value) {
     return String(value)

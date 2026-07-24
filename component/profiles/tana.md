@@ -1,23 +1,22 @@
-# 名前
-
-![プロフィール画像](/img/profile/your-image-name.png)
+# Ha Sitana
+![プロフィール画像](/img/profile/tana.jpg)
 
 ## 自己紹介
-ここに自己紹介文を記入します。
+失敗を恐れず、一つひとつのつまずきを成長への礎とし、情熱を胸に、未来へ向かって歩み続けます。
 
 ## 出身地
-- 例: 岐阜県
+中国
 
 ## 趣味・特技
-- 趣味1
-- 趣味2
+
+- スポーツ⚽️🏸🏐🎾
+- プログラミング
+
 
 ## 活動紹介
-<div class="slide-container">
-<iframe src="ここに埋め込みURLを入力" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-</div>
+勉強中...
 
 ## リンク
 - [Webサイト](https://example.com)
 - [GitHub](https://github.com/your_username)
-- [X](https://twitter.com/your_username)
+- [X](https://twitter.com/your_username)/img/profile/tana.jpg
