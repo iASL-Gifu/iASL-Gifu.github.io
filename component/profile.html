@@ -62,7 +62,14 @@
                     const mdResponse = await fetch(markdownPath);
 
                     const markdownText = await mdResponse.text();
-                    document.getElementById('profile-content').innerHTML = marked.parse(markdownText);
+                    const profileContent = document.getElementById('profile-content');
+                    profileContent.innerHTML = marked.parse(markdownText);
+
+                    // 名前(h1)が翻訳されないようにする
+                    const nameHeading = profileContent.querySelector('h1');
+                    if (nameHeading) {
+                        nameHeading.setAttribute('translate', 'no');
+                    }
 
                 } catch (error) {
                     // MDファイル以外のエラーはこちらで処理される

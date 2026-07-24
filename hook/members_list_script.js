@@ -119,7 +119,7 @@ function createMemberCard(member) {
             </a>
             <div class="member-info">
                 <h3 class="member-name">
-                    <a href="profile.html?id=${encodeURIComponent(member.id)}" class="profile-link">${escapeHtml(member.name)}</a>
+                    <a href="profile.html?id=${encodeURIComponent(member.id)}" class="profile-link" translate="no">${escapeHtml(member.name)}</a>
                 </h3>
                 <div class="keywords-container">${keywords}</div>
                 <div class="social-icons">
@@ -132,5 +132,5 @@ function createMemberCard(member) {
 }
 
 function createObEntry(member) {
-    return `<div class="ob-name">${escapeHtml(member.name)}</div>`;
+    return `<div class="ob-name" translate="no">${escapeHtml(member.name)}</div>`;
 }
