@@ -148,15 +148,17 @@ ul {
     width: 100%;
     min-height: var(--nav-width);
     border-radius: 24px;
-    background: var(--nav-bg);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.2);
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
     cursor: pointer;
     transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .burger:hover {
     transform: translateY(-2px);
-    background: rgba(15, 23, 42, 0.96);
+    background: rgba(255, 255, 255, 0.92);
 }
 
 .burger__patty {
@@ -164,7 +166,7 @@ ul {
     width: 28px;
     height: 2px;
     border-radius: 999px;
-    background: var(--white);
+    background: var(--text-strong);
     transition: transform 0.25s ease, background-color 0.25s ease;
 }
 
@@ -176,7 +178,7 @@ ul {
     width: 100%;
     height: 2px;
     border-radius: 999px;
-    background: var(--white);
+    background: var(--text-strong);
     transition: transform 0.25s ease, top 0.25s ease;
 }
 
@@ -205,19 +207,28 @@ ul {
 .nav__list {
     display: grid;
     gap: 12px;
-    margin-top: 12px;
-    padding: 14px;
+    margin-top: 0;
+    padding: 0 14px;
     border-radius: 28px;
     background: rgba(255, 255, 255, 0.76);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: var(--shadow-soft);
+    border: 0 solid rgba(255, 255, 255, 0.5);
+    box-shadow: none;
     backdrop-filter: blur(18px);
     transform: translateY(-10px) scale(0.96);
     transform-origin: top left;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.28s var(--ease-out), opacity 0.22s ease, visibility 0.22s ease;
+    max-height: 0;
+    overflow: hidden;
+    transition:
+        transform 0.28s var(--ease-out),
+        opacity 0.22s ease,
+        visibility 0.22s ease,
+        max-height 0.28s var(--ease-out),
+        margin-top 0.28s var(--ease-out),
+        padding 0.28s var(--ease-out),
+        border-width 0.28s var(--ease-out);
 }
 
 .nav__list--active {
@@ -225,7 +236,80 @@ ul {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    max-height: 400px;
+    margin-top: 12px;
+    padding: 14px;
+    border-width: 1px;
+    box-shadow: var(--shadow-soft);
 }
+
+.contact__sns {
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.contact__sns--inline {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 20px 0 0;
+}
+
+.contact__sns--footer {
+    display: none;
+    width: 100%;
+    justify-content: space-between;
+    margin: 36px 0 0;
+}
+
+.contact__sns-link {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    background: transparent;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.contact__sns-link:hover,
+.contact__sns-link:focus-visible {
+    transform: translateY(-3px);
+    background: rgba(95, 199, 234, 0.18);
+}
+
+.contact__sns .contact__sns-link img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    transition: transform 0.25s ease;
+}
+
+.contact__sns .contact__sns-link[aria-label="YouTube"] img {
+    width: 48px;
+    height: 48px;
+}
+
+.contact__sns .contact__sns-link[aria-label="X"] img {
+    width: 33px;
+    height: 33px;
+}
+
+.contact__sns-link:hover img {
+    transform: scale(1.1);
+}
+
 
 .nav__item {
     position: relative;
@@ -294,10 +378,7 @@ ul {
     width: min(100%, var(--content-max-width));
     margin: 0 auto;
     padding:
-        clamp(72px, 10vh, 112px)
-        clamp(24px, 5vw, 72px)
-        clamp(56px, 8vh, 88px)
-        calc(var(--layout-offset) + clamp(0px, 1vw, 18px));
+        clamp(72px, 10vh, 112px) clamp(24px, 5vw, 72px) clamp(56px, 8vh, 88px) calc(var(--layout-offset) + clamp(0px, 1vw, 18px));
 }
 
 .panel__content {
@@ -839,7 +920,7 @@ ul {
     list-style: decimal;
 }
 
-#article-content li + li {
+#article-content li+li {
     margin-top: 0.4em;
 }
 
@@ -1014,6 +1095,38 @@ ul {
         grid-template-columns: minmax(0, 1fr);
     }
 
+    .contact__sns--inline {
+        display: none;
+    }
+
+    .contact__sns--footer {
+        display: flex;
+        width: 100%;
+        max-width: 440px;
+        margin: 36px auto 0;
+        justify-content: space-between;
+    }
+
+    .contact__sns--footer .contact__sns-link {
+        width: 54px;
+        height: 54px;
+    }
+
+    .contact__sns--footer .contact__sns-link img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .contact__sns--footer .contact__sns-link[aria-label="YouTube"] img {
+        width: 46px;
+        height: 46px;
+    }
+
+    .contact__sns--footer .contact__sns-link[aria-label="X"] img {
+        width: 30px;
+        height: 30px;
+    }
+
     .groups {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1036,10 +1149,7 @@ ul {
 
     .panel__wrapper {
         padding:
-            clamp(64px, 9vh, 88px)
-            clamp(18px, 4vw, 28px)
-            clamp(40px, 7vh, 64px)
-            calc(var(--layout-offset) + 6px);
+            clamp(64px, 9vh, 88px) clamp(18px, 4vw, 28px) clamp(40px, 7vh, 64px) calc(var(--layout-offset) + 6px);
     }
 
     .groups {
@@ -1056,6 +1166,36 @@ ul {
 
     .article-popup-content {
         padding: 24px;
+    }
+
+    .contact__sns--footer {
+        width: 100%;
+        max-width: 440px;
+        margin: 36px auto 0;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 0 8px;
+        box-sizing: border-box;
+    }
+
+    .contact__sns--footer .contact__sns-link {
+        width: clamp(34px, 10vw, 46px);
+        height: clamp(34px, 10vw, 46px);
+    }
+
+    .contact__sns--footer .contact__sns-link img {
+        width: clamp(22px, 6.5vw, 30px);
+        height: clamp(22px, 6.5vw, 30px);
+    }
+
+    .contact__sns--footer .contact__sns-link[aria-label="YouTube"] img {
+        width: clamp(28px, 8.5vw, 40px);
+        height: clamp(28px, 8.5vw, 40px);
+    }
+
+    .contact__sns--footer .contact__sns-link[aria-label="X"] img {
+        width: clamp(19px, 5.8vw, 26px);
+        height: clamp(19px, 5.8vw, 26px);
     }
 }
 
@@ -1081,10 +1221,7 @@ ul {
 
     .panel__wrapper {
         padding:
-            72px
-            16px
-            32px
-            calc(var(--layout-offset) + 2px);
+            72px 16px 32px calc(var(--layout-offset) + 2px);
     }
 
     .panel__content {
