@@ -24,18 +24,14 @@
 
 
 ## 好き
-- 紅茶　ウイスキー<br>
-Mr.Children　JUDY AND MARY　槇原敬之　Cody・Lee(李)<br>
+Mr.Children　JUDY AND MARY<br>
 mazdaロードスター　GRヤリス<br>
-ウィンタースポーツ<br>
-変な服　裁縫　服のリメイク<br>
+裁縫　服のリメイク<br>
 アナログなもの
 
-
 ## 苦手
-- きゅうり　ホタルイカ<br>
+きゅうり　<br>
 音楽のある花火<br>
-路上駐車<br>
 caps lock<br>
 細身のデニム<br>
 
