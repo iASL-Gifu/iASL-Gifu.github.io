@@ -1,15 +1,15 @@
 function goBackOrRedirect() {
-    if (document.referrer) {
-        window.history.back();
-        return;
-    }
+  if (document.referrer) {
+    window.history.back();
+    return;
+  }
 
-    window.location.href = '/index.html';
+  window.location.href = '/index.html';
 }
 
 async function loadResearchList() {
   const response = await fetch(
-    "../research/research.csv"
+    "../component/research/research.csv"
   );
 
   const csv = await response.text();
@@ -33,9 +33,9 @@ async function initResearchPage() {
   const container = document.getElementById("researchs");
 
   if (!container) return;
-  
+
   const researchData = await loadResearchList();
-  
+
   const chips = document.querySelectorAll(".chip");
 
   let selectedTags = new Set();
@@ -70,7 +70,7 @@ async function initResearchPage() {
   const validResearchData = researchData.filter(
     item => item.mdPath?.trim()
   );
-  
+
   Promise.all(
     validResearchData.map(item =>
       fetch(item.mdPath).then(res => res.text())
@@ -85,8 +85,8 @@ async function initResearchPage() {
       if (!item.title || !item.title.trim()) return;
 
       const tags = (item.tags || "")
-          .split(/\s+/)
-          .filter(Boolean);
+        .split(/\s+/)
+        .filter(Boolean);
 
       tags.forEach(tag => allTags.add(tag));
 
@@ -141,7 +141,7 @@ async function initResearchPage() {
           filterItems();
         });
       });
-    
+
   });
 
   if (!container.dataset.bound) {
@@ -183,7 +183,7 @@ async function initResearchPage() {
       const tags = (item.dataset.tags || "")
         .split(/\s+/)
         .filter(Boolean);
-      
+
       const grade = item.dataset.grade || "";
 
       const lowerTags = tags.map(t => t.toLowerCase());

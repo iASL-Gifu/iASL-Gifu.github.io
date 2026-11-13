@@ -28,7 +28,7 @@ const I18N = {
         messageP2: 'そして現在,私は知能ロボットのセンシングや自律運転，それに関連する課題について取り組んでいます。こうした課題を取り組む中で、福祉課題などの地域問題解決にも貢献したいと考えています。',
         researchP1: 'センシングと認識技術を基盤に、車両自らが判断し行動する「E2E（End to End）自動運転」や、車と人が協調する運転支援システムなど、モビリティの知能化を追求しています。 さらに、大規模言語モデル（LLM）をはじめとする最先端AIの応用や、 車と社会をつなぐ「V2X（Vehicle to Everything）通信」、 現実世界を仮想空間に再現してシミュレーションを行う「デジタルツイン」まで、 モビリティの未来を形成する幅広い技術領域に挑戦しています。',
         researchBtn: 'COMING SOON',
-        membersP1: '研究室には、博士課程2名(D1: 2名)、修士課程10名(M2: 4名, M1: 6名)、学部生5名(B4: 5名)、研究生1名の計18名が在籍しており、日々交流しながら研究に取り組んでいます。',
+        membersP1: '研究室には、博士課程3名(D3: 1名, D2: 1名, D1: 1名)、修士課程10名(M2: 4名, M1: 6名)、学部生9名(B4: 5名, B3: 4名)、研究生1名の計23名が在籍しており、日々交流しながら研究に取り組んでいます。',
         membersP2: '研究室主催のイベントも多く学年の垣根を越えた交流が自然に生まれるのが魅力です。',
         membersBtn: 'More',
         addressP1: '〒501-1193 岐阜市柳戸1-1',
@@ -63,7 +63,7 @@ const I18N = {
         messageP2: 'Currently, my research focuses on intelligent robot sensing, autonomous driving, and related challenges. Through these efforts, I also aim to contribute to solving local and societal challenges, including assistive and welfare applications.',
         researchP1: 'Based on sensing and perception technologies, we pursue intelligent mobility, including End-to-End (E2E) autonomous driving where vehicles make decisions autonomously, and cooperative driving support systems between vehicles and humans. Furthermore, we are tackling a wide range of technological domains shaping the future of mobility—from the application of cutting-edge AI such as Large Language Models (LLMs) to Vehicle-to-Everything (V2X) communication and Digital Twin simulations that replicate the physical world in virtual spaces.',
         researchBtn: 'COMING SOON',
-        membersP1: 'Our laboratory currently has 18 members, including 2 Ph.D. students (D1: 2), 10 Master\'s students (M2: 4, M1: 6), 5 undergraduate students (B4: 5), and 1 research student, actively collaborating and conducting research every day.',
+        membersP1: 'Our laboratory currently has 23 members, including 3 Ph.D. students (D3: 1, D2: 1, D1: 2), 10 Master\'s students (M2: 4, M1: 6), 9 undergraduate students (B4: 5,B3: 4), and 1 research student, actively collaborating and conducting research every day.',
         membersP2: 'With many lab-hosted events, a welcoming culture fosters natural communication and collaboration across all academic years.',
         membersBtn: 'More',
         addressP1: '1-1 Yanagido, Gifu City, Gifu 501-1193, Japan',
@@ -417,29 +417,29 @@ function renderNews(newsData) {
     const html = `
         <div class="news-list">
             ${newsData.map((news) => {
-                const actions = [];
+        const actions = [];
 
-                if (news.attachment) {
-                    if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
-                        actions.push(`
+        if (news.attachment) {
+            if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
+                actions.push(`
                             <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-popup-image="${escapeHtml(news.attachment)}">
                                 <i class="fa fa-image" aria-hidden="true"></i>${escapeHtml(dict.viewPhoto)}
                             </a>
                         `);
-                    } else if (/\.md$/i.test(news.attachment)) {
-                        actions.push(`
+            } else if (/\.md$/i.test(news.attachment)) {
+                actions.push(`
                             <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-article-path="${escapeHtml(news.attachment)}">
                                 <i class="fa fa-file-alt" aria-hidden="true"></i>${escapeHtml(dict.readArticle)}
                             </a>
                         `);
-                    }
-                }
+            }
+        }
 
-                const contentText = (currentLanguage === 'en' && news.content_en && news.content_en.trim())
-                    ? news.content_en.trim()
-                    : news.content;
+        const contentText = (currentLanguage === 'en' && news.content_en && news.content_en.trim())
+            ? news.content_en.trim()
+            : news.content;
 
-                return `
+        return `
                     <article class="news-item">
                         <div class="news-date">${escapeHtml(news.date)}</div>
                         <div class="news-body">
@@ -448,7 +448,7 @@ function renderNews(newsData) {
                         </div>
                     </article>
                 `;
-            }).join('')}
+    }).join('')}
         </div>
     `;
 
