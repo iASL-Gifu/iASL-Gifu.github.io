@@ -405,6 +405,146 @@ function bindNewsActions(container) {
     });
 }
 
+const ALLOWED_MARKDOWN_TAGS = new Set([
+    'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+    'P', 'BR', 'HR', 'UL', 'OL', 'LI',
+    'BLOCKQUOTE', 'PRE', 'CODE',
+    'STRONG', 'B', 'EM', 'I', 'U', 'S', 'DEL',
+    'A', 'IMG', 'DIV', 'SPAN',
+    'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD',
+    'FIGURE', 'FIGCAPTION', 'IFRAME',
+]);
+
+const ALLOWED_IFRAME_PREFIXES = [
+    'https://docs.google.com/',
+    'https://www.google.com/maps/embed',
+    'https://www.youtube.com/embed/',
+    'https://www.youtube-nocookie.com/embed/',
+    'https://speakerdeck.com/',
+    'https://www.slideshare.net/',
+];
+
+function isSafeAssetUrl(urlValue, allowHash = true) {
+    const trimmed = String(urlValue || '').trim();
+    if (!trimmed) {
+        return false;
+    }
+    if (allowHash && trimmed.startsWith('#')) {
+        return true;
+    }
+    if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+        return true;
+    }
+    if (trimmed.startsWith('./') || trimmed.startsWith('../') || /^[a-zA-Z0-9_\-.]+(\/[a-zA-Z0-9_\-./]+)*$/.test(trimmed)) {
+        return true;
+    }
+    try {
+        const parsed = new URL(trimmed, window.location.origin);
+        return parsed.protocol === 'https:' || parsed.protocol === 'http:' || parsed.protocol === 'mailto:';
+    } catch {
+        return false;
+    }
+}
+
+function isSafeRelativePath(pathValue) {
+    const trimmed = String(pathValue || '').trim();
+    if (!trimmed || trimmed.startsWith('//') || trimmed.includes('..') || trimmed.includes('\\')) {
+        return false;
+    }
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) {
+        return false;
+    }
+    return /^\/?(img|component)\/[a-zA-Z0-9_\-./]+$/.test(trimmed);
+}
+
+function sanitizeDomNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        return document.createTextNode(node.textContent || '');
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+        return null;
+    }
+
+    const tagName = node.tagName.toUpperCase();
+    if (!ALLOWED_MARKDOWN_TAGS.has(tagName)) {
+        return null;
+    }
+
+    if (tagName === 'IFRAME') {
+        const src = (node.getAttribute('src') || '').trim();
+        if (!ALLOWED_IFRAME_PREFIXES.some((prefix) => src.startsWith(prefix))) {
+            return null;
+        }
+    }
+
+    const cleanEl = document.createElement(tagName.toLowerCase());
+    const allowedAttrs = ['class', 'id', 'title', 'alt', 'width', 'height', 'loading', 'decoding', 'translate', 'colspan', 'rowspan'];
+
+    for (const attr of allowedAttrs) {
+        if (node.hasAttribute(attr)) {
+            cleanEl.setAttribute(attr, node.getAttribute(attr));
+        }
+    }
+
+    if (tagName === 'A' && node.hasAttribute('href')) {
+        const href = node.getAttribute('href');
+        if (isSafeAssetUrl(href, true)) {
+            cleanEl.setAttribute('href', href);
+            if (node.getAttribute('target') === '_blank') {
+                cleanEl.setAttribute('target', '_blank');
+                cleanEl.setAttribute('rel', 'noopener noreferrer');
+            }
+        }
+    }
+
+    if (tagName === 'IMG' && node.hasAttribute('src')) {
+        const src = node.getAttribute('src');
+        if (isSafeAssetUrl(src, false)) {
+            cleanEl.setAttribute('src', src);
+        }
+    }
+
+    if (tagName === 'IFRAME') {
+        cleanEl.setAttribute('src', node.getAttribute('src'));
+        cleanEl.setAttribute('frameborder', '0');
+        cleanEl.setAttribute('allowfullscreen', 'true');
+        cleanEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-presentation');
+        cleanEl.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+    }
+
+    for (const child of Array.from(node.childNodes)) {
+        const sanitizedChild = sanitizeDomNode(child);
+        if (sanitizedChild) {
+            cleanEl.appendChild(sanitizedChild);
+        }
+    }
+
+    return cleanEl;
+}
+
+function renderSafeMarkdown(container, markdownText) {
+    if (!container) {
+        return;
+    }
+
+    const rawHtml = typeof marked !== 'undefined' && typeof marked.parse === 'function'
+        ? marked.parse(String(markdownText || ''))
+        : String(markdownText || '');
+
+    const parsedDoc = new DOMParser().parseFromString(rawHtml, 'text/html');
+    const fragment = document.createDocumentFragment();
+
+    for (const child of Array.from(parsedDoc.body.childNodes)) {
+        const sanitized = sanitizeDomNode(child);
+        if (sanitized) {
+            fragment.appendChild(sanitized);
+        }
+    }
+
+    container.replaceChildren(fragment);
+}
+
 function renderNews(newsData) {
     cachedNewsData = newsData;
     const container = document.getElementById('news-container');
@@ -413,46 +553,70 @@ function renderNews(newsData) {
     }
 
     const dict = I18N[currentLanguage] || I18N.ja;
+    const listEl = document.createElement('div');
+    listEl.className = 'news-list';
 
-    const html = `
-        <div class="news-list">
-            ${newsData.map((news) => {
-        const actions = [];
+        newsData.forEach((news) => {
+            const articleEl = document.createElement('article');
+            articleEl.className = 'news-item';
 
-        if (news.attachment) {
-            if (/\.(jpg|jpeg|png|gif)$/i.test(news.attachment)) {
-                actions.push(`
-                            <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-popup-image="${escapeHtml(news.attachment)}">
-                                <i class="fa fa-image" aria-hidden="true"></i>${escapeHtml(dict.viewPhoto)}
-                            </a>
-                        `);
-            } else if (/\.md$/i.test(news.attachment)) {
-                actions.push(`
-                            <a href="${escapeHtml(news.attachment)}" class="news-attachment-link" data-article-path="${escapeHtml(news.attachment)}">
-                                <i class="fa fa-file-alt" aria-hidden="true"></i>${escapeHtml(dict.readArticle)}
-                            </a>
-                        `);
+            const dateEl = document.createElement('div');
+            dateEl.className = 'news-date';
+            dateEl.textContent = news.date || '';
+
+            const bodyEl = document.createElement('div');
+            bodyEl.className = 'news-body';
+
+            const copyEl = document.createElement('p');
+            copyEl.className = 'news-copy';
+            const contentText = (currentLanguage === 'en' && news.content_en && news.content_en.trim())
+                ? news.content_en.trim()
+            : (news.content || '');
+    copyEl.textContent = contentText;
+    bodyEl.appendChild(copyEl);
+
+        if (news.attachment && isSafeRelativePath(news.attachment)) {
+            const attachment = news.attachment.trim();
+            let actionLink = null;
+
+            if (/\.(jpg|jpeg|png|gif|webp)$/i.test(attachment)) {
+                actionLink = document.createElement('a');
+                actionLink.href = attachment;
+                actionLink.className = 'news-attachment-link';
+                actionLink.dataset.popupImage = attachment;
+
+                const icon = document.createElement('i');
+                icon.className = 'fa fa-image';
+                icon.setAttribute('aria-hidden', 'true');
+                actionLink.appendChild(icon);
+                actionLink.appendChild(document.createTextNode(dict.viewPhoto));
+            } else if (/\.md$/i.test(attachment)) {
+                actionLink = document.createElement('a');
+                actionLink.href = attachment;
+                actionLink.className = 'news-attachment-link';
+                actionLink.dataset.articlePath = attachment;
+
+                const icon = document.createElement('i');
+                icon.className = 'fa fa-file-alt';
+                icon.setAttribute('aria-hidden', 'true');
+                actionLink.appendChild(icon);
+                actionLink.appendChild(document.createTextNode(dict.readArticle));
+            }
+
+            if (actionLink) {
+                const actionsEl = document.createElement('div');
+                actionsEl.className = 'news-actions';
+                actionsEl.appendChild(actionLink);
+                bodyEl.appendChild(actionsEl);
             }
         }
 
-        const contentText = (currentLanguage === 'en' && news.content_en && news.content_en.trim())
-            ? news.content_en.trim()
-            : news.content;
+        articleEl.appendChild(dateEl);
+        articleEl.appendChild(bodyEl);
+        listEl.appendChild(articleEl);
+    });
 
-        return `
-                    <article class="news-item">
-                        <div class="news-date">${escapeHtml(news.date)}</div>
-                        <div class="news-body">
-                            <p class="news-copy">${escapeHtml(contentText)}</p>
-                            ${actions.length ? `<div class="news-actions">${actions.join('')}</div>` : ''}
-                        </div>
-                    </article>
-                `;
-    }).join('')}
-        </div>
-    `;
-
-    container.innerHTML = html;
+    container.replaceChildren(listEl);
     bindNewsActions(container);
 }
 
@@ -537,6 +701,10 @@ async function showArticle(eventOrPath, pathArg) {
     }
 
     try {
+        if (!isSafeRelativePath(mdPath) || !/\.md$/i.test(mdPath.trim())) {
+            throw new Error('無効な記事パスです。');
+        }
+
         const response = await fetch(mdPath);
         if (!response.ok) {
             throw new Error('記事の読み込みに失敗');
@@ -544,9 +712,11 @@ async function showArticle(eventOrPath, pathArg) {
 
         const mdText = await response.text();
         await ensureMarked();
-        articleContent.innerHTML = marked.parse(mdText);
+        renderSafeMarkdown(articleContent, mdText);
     } catch (error) {
-        articleContent.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+        const errorP = document.createElement('p');
+        errorP.textContent = error.message;
+        articleContent.replaceChildren(errorP);
     }
 
     articlePopup.style.display = 'flex';
@@ -630,10 +800,10 @@ function initBackgroundAnimation() {
         icon.classList.add('floating-icon');
         icon.src = iconImages[Math.floor(Math.random() * iconImages.length)];
         icon.alt = '';
-        icon.style.width = `${size}px`;
-        icon.style.left = `${Math.random() * 100}vw`;
-        icon.style.animationDuration = `${duration}s`;
-        icon.style.animationDelay = `${Math.random() * 1.5}s`;
+        icon.style.width = `${ size } px`;
+        icon.style.left = `${ Math.random() * 100 } vw`;
+        icon.style.animationDuration = `${ duration } s`;
+        icon.style.animationDelay = `${ Math.random() * 1.5 } s`;
 
         backgroundAnimation.appendChild(icon);
 

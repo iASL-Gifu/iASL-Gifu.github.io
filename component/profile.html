@@ -23,8 +23,147 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // 【重要】スプレッドシートの公開URLをここに貼り付け
         const SPREADSHEET_URL = '/component/profiles/members.csv';
+
+        const ALLOWED_MARKDOWN_TAGS = new Set([
+            'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+            'P', 'BR', 'HR', 'UL', 'OL', 'LI',
+            'BLOCKQUOTE', 'PRE', 'CODE',
+            'STRONG', 'B', 'EM', 'I', 'U', 'S', 'DEL',
+            'A', 'IMG', 'DIV', 'SPAN',
+            'TABLE', 'THEAD', 'TBODY', 'TR', 'TH', 'TD',
+            'FIGURE', 'FIGCAPTION', 'IFRAME',
+        ]);
+
+        const ALLOWED_IFRAME_PREFIXES = [
+            'https://docs.google.com/',
+            'https://www.google.com/maps/embed',
+            'https://www.youtube.com/embed/',
+            'https://www.youtube-nocookie.com/embed/',
+            'https://speakerdeck.com/',
+            'https://www.slideshare.net/',
+        ];
+
+        function isSafeAssetUrl(urlValue, allowHash = true) {
+            const trimmed = String(urlValue || '').trim();
+            if (!trimmed) {
+                return false;
+            }
+            if (allowHash && trimmed.startsWith('#')) {
+                return true;
+            }
+            if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+                return true;
+            }
+            if (trimmed.startsWith('./') || trimmed.startsWith('../') || /^[a-zA-Z0-9_\-.]+(\/[a-zA-Z0-9_\-./]+)*$/.test(trimmed)) {
+                return true;
+            }
+            try {
+                const parsed = new URL(trimmed, window.location.origin);
+                return parsed.protocol === 'https:' || parsed.protocol === 'http:' || parsed.protocol === 'mailto:';
+            } catch {
+                return false;
+            }
+        }
+
+        function isSafeProfileMdPath(pathValue) {
+            const trimmed = String(pathValue || '').trim();
+            if (!trimmed || trimmed.startsWith('//') || trimmed.includes('..') || trimmed.includes('\\')) {
+                return false;
+            }
+            if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) {
+                return false;
+            }
+            return /^(\/?component\/profiles\/|profiles\/)[a-zA-Z0-9_\-]+\.md$/i.test(trimmed);
+        }
+
+        function sanitizeDomNode(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                return document.createTextNode(node.textContent || '');
+            }
+
+            if (node.nodeType !== Node.ELEMENT_NODE) {
+                return null;
+            }
+
+            const tagName = node.tagName.toUpperCase();
+            if (!ALLOWED_MARKDOWN_TAGS.has(tagName)) {
+                return null;
+            }
+
+            if (tagName === 'IFRAME') {
+                const src = (node.getAttribute('src') || '').trim();
+                if (!ALLOWED_IFRAME_PREFIXES.some((prefix) => src.startsWith(prefix))) {
+                    return null;
+                }
+            }
+
+            const cleanEl = document.createElement(tagName.toLowerCase());
+            const allowedAttrs = ['class', 'id', 'title', 'alt', 'width', 'height', 'loading', 'decoding', 'translate', 'colspan', 'rowspan'];
+
+            for (const attr of allowedAttrs) {
+                if (node.hasAttribute(attr)) {
+                    cleanEl.setAttribute(attr, node.getAttribute(attr));
+                }
+            }
+
+            if (tagName === 'A' && node.hasAttribute('href')) {
+                const href = node.getAttribute('href');
+                if (isSafeAssetUrl(href, true)) {
+                    cleanEl.setAttribute('href', href);
+                    if (node.getAttribute('target') === '_blank') {
+                        cleanEl.setAttribute('target', '_blank');
+                        cleanEl.setAttribute('rel', 'noopener noreferrer');
+                    }
+                }
+            }
+
+            if (tagName === 'IMG' && node.hasAttribute('src')) {
+                const src = node.getAttribute('src');
+                if (isSafeAssetUrl(src, false)) {
+                    cleanEl.setAttribute('src', src);
+                }
+            }
+
+            if (tagName === 'IFRAME') {
+                cleanEl.setAttribute('src', node.getAttribute('src'));
+                cleanEl.setAttribute('frameborder', '0');
+                cleanEl.setAttribute('allowfullscreen', 'true');
+                cleanEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-presentation');
+                cleanEl.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+            }
+
+            for (const child of Array.from(node.childNodes)) {
+                const sanitizedChild = sanitizeDomNode(child);
+                if (sanitizedChild) {
+                    cleanEl.appendChild(sanitizedChild);
+                }
+            }
+
+            return cleanEl;
+        }
+
+        function renderSafeMarkdown(container, markdownText) {
+            if (!container) {
+                return;
+            }
+
+            const rawHtml = typeof marked !== 'undefined' && typeof marked.parse === 'function'
+                ? marked.parse(String(markdownText || ''))
+                : String(markdownText || '');
+
+            const parsedDoc = new DOMParser().parseFromString(rawHtml, 'text/html');
+            const fragment = document.createDocumentFragment();
+
+            for (const child of Array.from(parsedDoc.body.childNodes)) {
+                const sanitized = sanitizeDomNode(child);
+                if (sanitized) {
+                    fragment.appendChild(sanitized);
+                }
+            }
+
+            container.replaceChildren(fragment);
+        }
 
         function goBackOrRedirect() {
             if (document.referrer.includes('/component/members_list.html')) {
@@ -40,70 +179,99 @@
 
             if (memberId) {
                 try {
-                    // スプレッドシートから全メンバーの情報を取得
                     const response = await fetch(SPREADSHEET_URL);
                     if (!response.ok) throw new Error('名簿データの取得に失敗しました。');
 
                     const csvText = await response.text();
                     const members = parseCSV(csvText);
 
-                    // 該当するIDのメンバーを探す
                     const targetMember = members.find(m => m.id === memberId);
                     if (!targetMember) throw new Error('指定されたメンバーが見つかりません。');
 
-                    // スプレッドシートから取得したローカルパスを使ってMDファイルを取得
-                    const markdownPath = targetMember.mdPath;
-                    if (!markdownPath) {
-                        // throw new Error('プロフィールファイルのパスが指定されていません。');
-                        // alert('プロフィールファイルが見つかりませんでした。メンバーリストのページに戻ります。');
-                        window.location.href = "/component/members_list.html";
-                        return;
+                        const markdownPath = (targetMember.mdPath || '').trim();
+                        if (!markdownPath || !isSafeProfileMdPath(markdownPath)) {
+                            window.location.href = "/component/members_list.html";
+                            return;
+                        }
+                        const mdResponse = await fetch(markdownPath);
+                        if (!mdResponse.ok) throw new Error('プロフィールファイルの取得に失敗しました。');
+
+                        const markdownText = await mdResponse.text();
+                        const profileContent = document.getElementById('profile-content');
+                        renderSafeMarkdown(profileContent, markdownText);
+
+                        const nameHeading = profileContent.querySelector('h1');
+                        if (nameHeading) {
+                            nameHeading.setAttribute('translate', 'no');
+                        }
+
+                    } catch (error) {
+                        handleError(error.message);
                     }
-                    const mdResponse = await fetch(markdownPath);
-
-                    const markdownText = await mdResponse.text();
-                    const profileContent = document.getElementById('profile-content');
-                    profileContent.innerHTML = marked.parse(markdownText);
-
-                    // 名前(h1)が翻訳されないようにする
-                    const nameHeading = profileContent.querySelector('h1');
-                    if (nameHeading) {
-                        nameHeading.setAttribute('translate', 'no');
-                    }
-
-                } catch (error) {
-                    // MDファイル以外のエラーはこちらで処理される
-                    handleError(error.message);
+                } else {
+                    handleError('メンバーが指定されていません。');
+                    window.location.href = "/component/members_list.html";
+                    return;
                 }
-            } else {
-                handleError('メンバーが指定されていません。');
-                alert('プロフィールファイルが見つかりませんでした。メンバーリストのページに戻ります。');
-                window.location.href = "/component/members_list.html";
-                return; // 処理を中断
-            }
-        });
+            });
 
         function handleError(message) {
             console.error('Error:', message);
-            document.getElementById('profile-content').innerHTML = `<p style="text-align: center;">${message}</p>`;
+            const profileContent = document.getElementById('profile-content');
+            if (!profileContent) return;
+            const p = document.createElement('p');
+            p.style.textAlign = 'center';
+            p.textContent = message;
+            profileContent.replaceChildren(p);
+        }
+
+        function splitCsvLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i += 1) {
+                const char = line[i];
+                const nextChar = line[i + 1];
+
+                if (char === '"' && inQuotes && nextChar === '"') {
+                    current += '"';
+                    i += 1;
+                    continue;
+                }
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                    continue;
+                }
+
+                if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                    continue;
+                }
+
+                current += char;
+            }
+
+            values.push(current.trim());
+            return values;
         }
 
         function parseCSV(text) {
-            // Windowsの改行コード(CRLF)とMac/Linuxの改行コード(LF)の両方に対応
             const lines = text.trim().split(/\r?\n/);
             if (lines.length === 0) return [];
 
-            const headers = lines[0].split(',').map(h => h.trim());
+            const headers = splitCsvLine(lines[0]);
             const members = [];
 
             for (let i = 1; i < lines.length; i++) {
-                // 空白行を無視する
                 if (lines[i].trim() === '') continue;
 
-                const values = lines[i].split(',').map(v => v.trim());
+                const values = splitCsvLine(lines[i]);
                 const member = {};
                 headers.forEach((header, index) => {
-                    member[header] = values[index];
+                    member[header] = values[index] || '';
                 });
                 members.push(member);
             }
